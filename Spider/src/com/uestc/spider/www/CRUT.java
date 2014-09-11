@@ -1,7 +1,12 @@
 package com.uestc.spider.www;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 
@@ -12,12 +17,16 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSInputFile;
 
 public class CRUT {
 
 	static private Mongo mg  = null;
 	static private DB db ;
 	static private DBCollection users;
+	static private GridFS gd;
 	
 	public CRUT(){
 		
@@ -33,6 +42,8 @@ public class CRUT {
 		db = mg.getDB("cdsb");
 		//获取users DBCollection；如果默认没有创建，mongodb会自动创建
 		users = db.getCollection("cg");
+		
+		gd = new GridFS(db);
 //		System.out.println("我被执行啦");
 	}
 	//删除数据库
@@ -54,17 +65,38 @@ public class CRUT {
 		DBObject user = new BasicDBObject();
 		user.put(newName, newTime);
 		user.put(newContent, newOffice);
+		user.put("image", "filename");
 		users.insert(user);
 //		System.out.println("111");
 //		System.out.println(users.find(new BasicDBObject(newName, newTime)).toArray());
 		
 	}
 	
-	//添加图片以及PDF文件
-	public void add(File file){
-		
+	//添加图片以及PDF文件 取当前目录下的image文件夹内容
+	public void addFile(){
+		File filePath = new File(".\\image");
+		String fileName[] = filePath.list();
+		GridFSInputFile mongoFile = gd.createFile();
+		for(int i = 0 ; i< fileName.length;i++){
+			mongoFile.put("image"+i, fileName[i]);
+			mongoFile.save();
+		}
 		
 	}
+	//读取文件并写到磁盘上(当前文件夹下的file文件夹下)
+	public void readFile(String filename) throws IOException{
+		
+		GridFSDBFile fileOut = gd.findOne(filename);
+		System.out.println(fileOut);
+		fileOut.writeTo(".\\file"+filename);
+	}
+	
+	//删除图片
+	public void deleteFile(String filename){
+		
+		gd.remove(gd.findOne(filename));
+	}
+	
 	//查询可以查新闻题目，新闻内容，新闻发布时间，报社名称等
 	public void query(String key,String value){
 	

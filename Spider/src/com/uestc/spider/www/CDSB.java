@@ -182,10 +182,11 @@ public class CDSB implements Runnable {
 	   return content;
    }
  /*
-  * 新闻图片
+  * 新闻图片 图片名为：时间+后缀（比如：20140910.jpg）
   * */
    void handleImage(String html){
 	   GetImage image = new GetImage();
+	   image.fileName = handleTime(html)+".jpg";
 	   image.getImage(html);
 	   
    }

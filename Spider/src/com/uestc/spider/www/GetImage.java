@@ -19,6 +19,7 @@ public class GetImage {
     // 地址  
     public String URL ; 
     public String urll = "http://e.chengdu.cn/";  //可配置
+    public String fileName ;
     // 编码  
     private static final String ECODING = "UTF-8";  
     // 获取img标签正则  
@@ -113,10 +114,10 @@ public class GetImage {
         try {  
             for (String url : listImgSrc) { 
 //            	System.out.println(url+"tttt");
-                String imageName = url.substring(url.lastIndexOf("/")+1, url.length());  
+                String imageName = url.substring(url.lastIndexOf(".")+1, url.length());  
                 URL uri = new URL(url);  
                 InputStream in = uri.openStream();  
-                FileOutputStream fo = new FileOutputStream(new File(".\\image",imageName));  
+                FileOutputStream fo = new FileOutputStream(new File(".\\image",fileName+imageName));  
                 byte[] buf = new byte[1024];  
                 int length = 0;  
 //                System.out.println("开始下载:" + url);  
