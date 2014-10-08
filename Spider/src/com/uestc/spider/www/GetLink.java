@@ -10,6 +10,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
 public class GetLink {
+	
 	public String url;
 	public Vector<String> link = new Vector<String>();
 	public GetLink(String url){
