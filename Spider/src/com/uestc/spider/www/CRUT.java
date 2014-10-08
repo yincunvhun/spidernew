@@ -3,6 +3,7 @@ package com.uestc.spider.www;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class CRUT {
 	}
 	
 	//添加图片以及PDF文件 取当前目录下的image文件夹内容
-	public void addFile(){
+	public void addFile(InputStream in,Object id){
 		File filePath = new File(".\\image");
 		String fileName[] = filePath.list();
 		GridFSInputFile mongoFile = gd.createFile();
@@ -134,7 +135,7 @@ public class CRUT {
 //    	test.add("xixi", "2014.9.10", "教师节快乐", "uestc");
 //    	test.remove("xi","2014.9.10");
 //    	test.add("xi","2014.9.10","jiaoshijiekuailfe","uestc");
-    	test.query("2014",test1.handleTitle(test1.text));
+    	test.query("image","filename");
     	test.query(test1.handleTitle(test1.text),"2014");
 //    	test.query("xixi","2014.9.10");
     }

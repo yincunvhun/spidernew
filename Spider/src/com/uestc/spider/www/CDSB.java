@@ -230,6 +230,8 @@ public class CDSB implements Runnable {
 	   crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleTime(cdsb.text),
 			   cdsb.handleContent(cdsb.text),cdsb.handleOfficeName(cdsb.text));
    }
+   
+   
     public static void main(String[] args) throws Exception {
     	
     	String url1 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
