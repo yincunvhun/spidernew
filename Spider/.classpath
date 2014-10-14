@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/git/spider/Spider/htmllexer.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/git/spider/Spider/htmlparser.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/git/spider/Spider/mongo-2.10.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/训春/git/spider/Spider/htmllexer.jar"/>
+	<classpathentry kind="lib" path="C:/Users/训春/git/spider/Spider/htmlparser.jar"/>
+	<classpathentry kind="lib" path="C:/Users/训春/git/spider/Spider/mongo-2.10.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
