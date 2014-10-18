@@ -38,10 +38,21 @@ public class CDSB implements Runnable {
     BufferedReader bufferedReader;
     String url;              		//要处理的url
     String text = "";       		 //存储url的html内容
+    String nameSource = "cdsb";
+
     public String title;  			//新闻标题
+    public String titleContent;     //新闻内容标题
+    public String originalTitle;    //未处理原始标题
+    
     public String content;			//新闻内容
+    
     public String time;             //新闻发布时间
-    public String officeName;       //报社名称
+    
+    public String newSource;       //新闻来源
+    public String originalSource ;       //未处理原始新闻来源
+    
+    public String categroy ;            //新闻类别
+    public String originalCategroy ; //新闻原始分类
   
     public CDSB(String url) {
   
@@ -165,12 +176,29 @@ public class CDSB implements Runnable {
  /*
   * 新闻标题
   * */ 
- String handleTitle(String html){
-	   title = handle(html,"title");
-	   title += handle(html,"class","content-title");
+ String handleOriginalTitle(String html){
+	   originalTitle = handle(html,"title");
+//	   title += handle(html,"class","content-title");
 //	   System.out.println(title);
-	   return title;
+	   return originalTitle;
    }
+ /*
+  * 新闻内容标题
+  * 
+  * */
+ String handleTitleContent(String html){
+	 titleContent = handle(html,"class","content-title");
+	 return titleContent;
+ }
+ String handleTitle(String html){
+	 title = handle(html,"title");
+	 title = title.replace(" - 成都商报|成都商报电子版|成都商报官方网站", "");
+	 System.out.println(title);
+	 return title;
+ }
+ String hanleUrl(){
+	 return url;
+ }
 /*
  * 新闻内容
  * */
@@ -178,16 +206,17 @@ public class CDSB implements Runnable {
 	   
 	   content = handle(html,"id","ozoom");
 //	   content = content.replaceAll("\\n", "");
-	   System.out.println(content);
+//	   System.out.println(content);
 	   return content;
    }
  /*
   * 新闻图片 图片名为：时间+后缀（比如：20140910.jpg）
   * */
-   void handleImage(String html){
+   public String handleImage(String html){
 	   GetImage image = new GetImage();
-	   image.fileName = handleTime(html)+".jpg";
+	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+" "+ nameSource+"0001";
 	   image.getImage(html);
+	   return "C:\\Users\\Administrator\\git\\spider\\Spider\\image\\"+image.getImage(html).toString();
 	   
    }
    
@@ -207,17 +236,48 @@ public class CDSB implements Runnable {
 //	   time = time.substring(0,12);  //只获取时间
 	   if(time.contains(" "))
 		   time = time.replaceAll("\\s", "");
-	   System.out.println(time);
+//	   System.out.println(time);
 	   return time;
    }
   /*
-   * 获取报社名称
+   * 获取原始报社名称
    * 
    * */
-   String handleOfficeName(String html){
-	   officeName = handle(html,"class","info");
-	   System.out.println(officeName);
-	   return officeName;
+   String handleNewSource(String html){
+	   newSource = handle(html,"class","info");
+	   newSource = newSource.substring(0, 4);
+//	   System.out.println(officeName);
+	   return newSource;
+   }
+   /*
+    * 新闻来源
+    * */
+   public String handleOriginalSource(String html) {
+	// TODO Auto-generated method stub
+	originalSource = handle(html,"class","info");
+//	System.out.println(cgSource);
+	return originalSource;
+}
+   /*
+    * 版面属性
+    * */
+   String handleCategroy(String html){
+	   categroy = handle(html ,"width","57%");
+	   categroy = categroy.substring(10, 19);
+	   categroy = categroy.replaceAll("\\s*", "");
+	   categroy = categroy.substring(5,categroy.length());
+	   System.out.println(categroy);
+	   return categroy;
+	   
+   }
+ /*
+  * 新闻原始类别
+  * */
+   String handleOriginalCategroy(String html){
+	   originalCategroy = handle(html ,"width","57%");
+	   originalCategroy = originalCategroy.substring(10, 19);
+	   originalCategroy = originalCategroy.replaceAll("\\s*", "");
+	   return originalCategroy;
    }
    /*
     * 新闻相关内容的存储
@@ -227,17 +287,27 @@ public class CDSB implements Runnable {
 	   
 	   CRUT crut = new CRUT();
 	   CDSB cdsb = new CDSB(url);
-	   crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleTime(cdsb.text),
-			   cdsb.handleContent(cdsb.text),cdsb.handleOfficeName(cdsb.text));
+	   crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleOriginalTitle(cdsb.text), cdsb.handleTitleContent(cdsb.text),
+			   cdsb.handleTime(cdsb.text),cdsb.handleContent(cdsb.text),
+			   cdsb.handleNewSource(cdsb.text), cdsb.handleOriginalSource(cdsb.text),
+			   cdsb.handleCategroy(cdsb.text), cdsb.handleOriginalCategroy(cdsb.text),
+			   url,cdsb.handleImage(cdsb.text));
    }
    
    
-    public static void main(String[] args) throws Exception {
+
+	public static void main(String[] args) throws Exception {
     	
     	String url1 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
     	String url2 = "http://paper.people.com.cn/rmrb/html/2014-09/05/nw.D110000renmrb_20140905_1-01.htm";
     	String url3 =  "http://www.csdn.net";
-    	memory(url1);
+    	CDSB T = new CDSB(url1);
+    	T.handleImage(T.text);
+    	
+    	String s = "sfsafsa98u8swf8i98wufwe";
+//    	System.out.println(s.replaceAll("[^0-9]", ""));
+    	
+//    	memory(url1);
 //    	CDSB test = new CDSB(url1);	
 //    	test.handleOfficeName(test.text);
 //    	CRUT crut = new CRUT();

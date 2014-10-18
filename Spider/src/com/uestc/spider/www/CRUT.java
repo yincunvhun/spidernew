@@ -54,7 +54,7 @@ public class CRUT {
         mg = null;
         db = null;
         users = null;
-        System.gc();
+//        System.gc();
     }
 	
 	/*
@@ -62,14 +62,34 @@ public class CRUT {
 	 * 内容为：新闻题目，新闻内容，报社名称，发布时间
 	 * k-v:(name ,time) (content , office)
 	 */
-	public void add(String newName,String newTime ,String newContent,String newOffice){
+	public void add(String title,String originalTitle,String titleContent,
+			String time ,String content,
+			String newSource,String originalSource,
+			String category,String originalCategroy,
+			String url ,String image){
 		DBObject user = new BasicDBObject();
-		user.put(newName, newTime);
-		user.put(newContent, newOffice);
-		user.put("image", "filename");
+		//三个标题：标题，内容标题，原始标题
+		user.put("Title", title);
+		user.put("OriginalTitle", originalTitle);
+		user.put("TitleContent", titleContent);
+		
+		//发布时间
+		user.put("Time", time);
+		//新闻内容
+		user.put("Content",content);
+		//两个新闻来源 ：新闻来源，新闻原始来源
+		user.put("NewSource",newSource);
+		user.put("OriginalSource", originalSource);
+		//两个新闻分类 ：类别 新闻原始类别
+		user.put("Category", category);
+		user.put("OriginalCategroy", originalCategroy);
+		//新闻网址
+		user.put("Url", url);
+		//新闻图片
+		user.put("image",image);
+
 		users.insert(user);
-//		System.out.println("111");
-//		System.out.println(users.find(new BasicDBObject(newName, newTime)).toArray());
+
 		
 	}
 	
@@ -88,7 +108,7 @@ public class CRUT {
 	public void readFile(String filename) throws IOException{
 		
 		GridFSDBFile fileOut = gd.findOne(filename);
-		System.out.println(fileOut);
+//		System.out.println(fileOut);
 		fileOut.writeTo(".\\file"+filename);
 	}
 	
@@ -135,8 +155,10 @@ public class CRUT {
 //    	test.add("xixi", "2014.9.10", "教师节快乐", "uestc");
 //    	test.remove("xi","2014.9.10");
 //    	test.add("xi","2014.9.10","jiaoshijiekuailfe","uestc");
-    	test.query("image","filename");
-    	test.query(test1.handleTitle(test1.text),"2014");
+		System.out.println(test1.handleTitle(test1.text)+"      gfhfhfg");
+//		test.add(test1.handleTitle(test1.text),test1.handleTime(test1.text),test1.handleContent(test1.text),test1.handleOfficeName(test1.text),test1.handlePage(test1.text),url1);
+    	test.query("Title",test1.handleTitle(test1.text));
+//    	test.query(test1.handleTitle(test1.text),"2014");
 //    	test.query("xixi","2014.9.10");
     }
 }

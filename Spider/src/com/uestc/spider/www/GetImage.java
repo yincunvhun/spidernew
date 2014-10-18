@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;  
 import java.util.ArrayList;  
 import java.util.List;  
+import java.util.Vector;
 import java.util.regex.Matcher;  
 import java.util.regex.Pattern;  
   
@@ -110,14 +111,17 @@ public class GetImage {
      *  
      * @param listImgSrc 
      */  
-    private void Download(List<String> listImgSrc) {  
+    private Vector<String> Download(List<String> listImgSrc) {
+    	Vector<String> name = new Vector<String>();
         try {  
-            for (String url : listImgSrc) { 
+            for (int i = 1 ; i < listImgSrc.size();i++ ) { 
 //            	System.out.println(url+"tttt");
-                String imageName = url.substring(url.lastIndexOf(".")+1, url.length());  
+            	String url = listImgSrc.get(i);
+                String imageName = url.substring(url.lastIndexOf("."), url.length());  
                 URL uri = new URL(url);  
                 InputStream in = uri.openStream();  
-                FileOutputStream fo = new FileOutputStream(new File(".\\image",fileName+imageName));  
+                FileOutputStream fo = new FileOutputStream(new File(".\\image",fileName+"00"+i+""+imageName)); 
+                name.add(fileName+"00"+i+""+imageName);
                 byte[] buf = new byte[1024];  
                 int length = 0;  
 //                System.out.println("开始下载:" + url);  
@@ -130,19 +134,22 @@ public class GetImage {
             }  
         } catch (Exception e) {  
 //            System.out.println("下载失败");  
-        }  
+        } 
+        
+        return name;
     }  
   
    /* 整合
     * 
     * */ 
-    public void getImage(String html){
+    public Vector<String> getImage(String html){
 //    	GetImage image = new GetImage();
         //获取图片标签  
         List<String> imgUrl = getImageUrl(html);  
         //获取图片src地址  
         List<String> imgSrc = getImageSrc(imgUrl);  
         //下载图片  
-        Download(imgSrc);
+       return Download(imgSrc);
+        
     }
 }  
