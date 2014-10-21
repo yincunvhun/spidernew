@@ -146,18 +146,18 @@ public class CRUT {
     public static void main(String args[]){
     	
     	CRUT test = new CRUT();
-		for(String name:mg.getDatabaseNames())
-			System.out.println(name);
-		String url1 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
-		CDSB test1 = new CDSB(url1);	
+//		for(String name:mg.getDatabaseNames())
+//			System.out.println(name);
+//		String url1 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
+//		CDSB test1 = new CDSB(url1);	
 //		test.queryAll();
 //    	test.destory();
 //    	test.add("xixi", "2014.9.10", "教师节快乐", "uestc");
 //    	test.remove("xi","2014.9.10");
 //    	test.add("xi","2014.9.10","jiaoshijiekuailfe","uestc");
-		System.out.println(test1.handleTitle(test1.text)+"      gfhfhfg");
+//		System.out.println(test1.handleTitle(test1.text)+"      gfhfhfg");
 //		test.add(test1.handleTitle(test1.text),test1.handleTime(test1.text),test1.handleContent(test1.text),test1.handleOfficeName(test1.text),test1.handlePage(test1.text),url1);
-    	test.query("Title",test1.handleTitle(test1.text));
+    	test.query("Url","http://e.chengdu.cn/html/2014-10/16/content_493017.htm");
 //    	test.query(test1.handleTitle(test1.text),"2014");
 //    	test.query("xixi","2014.9.10");
     }

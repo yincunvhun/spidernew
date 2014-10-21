@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Vector;
 
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
@@ -53,6 +54,7 @@ public class CDSB implements Runnable {
     
     public String categroy ;            //新闻类别
     public String originalCategroy ; //新闻原始分类
+    public int state = 0;
   
     public CDSB(String url) {
   
@@ -67,18 +69,34 @@ public class CDSB implements Runnable {
   
         try {
             httpUrlConnection = (HttpURLConnection) new URL(url).openConnection(); //创建连接
+            state = httpUrlConnection.getResponseCode();
+            httpUrlConnection.disconnect();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+//            e.printStackTrace();
         }
   
 //        System.out.println("---------start-----------");
-  
-        Thread thread = new Thread(this);
-        thread.start();
-        try {thread.join();} catch (InterruptedException e) {e.printStackTrace();}
+        if(state == 200 ||state == 201){
+        	try {
+				httpUrlConnection = (HttpURLConnection) new URL(url).openConnection();
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+			} //创建连接
+        	Thread thread = new Thread(this);
+        	thread.start();
+        	try {
+        		thread.join();
+        	} catch (InterruptedException e) {
+//        		e.printStackTrace();
+        	}
+        }
   
 //        System.out.println("----------end------------");
     }
@@ -88,14 +106,16 @@ public class CDSB implements Runnable {
         try {
             httpUrlConnection.setRequestMethod("GET");
         } catch (ProtocolException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
   
         try {
             httpUrlConnection.setUseCaches(true); //使用缓存
-            httpUrlConnection.connect();           //建立连接
+            httpUrlConnection.connect();           //建立连接  链接超时处理
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+//        	continue;
+        	System.out.println("该链接访问超时...");
         }
   
         try {
@@ -109,14 +129,15 @@ public class CDSB implements Runnable {
             }
             text = sb.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             try {
                 bufferedReader.close();
                 inputStream.close();
                 httpUrlConnection.disconnect();
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+            	System.out.println("链接关闭出现问题...");
             }
   
         }
@@ -192,8 +213,9 @@ public class CDSB implements Runnable {
  }
  String handleTitle(String html){
 	 title = handle(html,"title");
-	 title = title.replace(" - 成都商报|成都商报电子版|成都商报官方网站", "");
-	 System.out.println(title);
+	 if(title != null && title != "")
+		 title = title.replace(" - 成都商报|成都商报电子版|成都商报官方网站", "");
+//	 System.out.println(title);
 	 return title;
  }
  String hanleUrl(){
@@ -211,12 +233,22 @@ public class CDSB implements Runnable {
    }
  /*
   * 新闻图片 图片名为：时间+后缀（比如：20140910.jpg）
+  * 命名处理待改进
   * */
    public String handleImage(String html){
+	   
+	   StringBuffer buf = new StringBuffer("");
+	   StringBuffer load = new StringBuffer("C:\\Users\\Administrator\\git\\spider\\Spider\\image\\");
+	   StringBuffer symbol = new StringBuffer(";");
 	   GetImage image = new GetImage();
-	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+" "+ nameSource+"0001";
-	   image.getImage(html);
-	   return "C:\\Users\\Administrator\\git\\spider\\Spider\\image\\"+image.getImage(html).toString();
+	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+" "+ nameSource;
+	   Vector<String> dateSourceNumNum = image.getImage(html); 
+	   for(String s: dateSourceNumNum){
+		   buf = buf.append(load).append(new StringBuffer(s)).append(symbol);
+	   }
+	   if(buf.toString() == "")
+		   buf = new StringBuffer("No Images");
+	   return buf.toString();
 	   
    }
    
@@ -245,7 +277,8 @@ public class CDSB implements Runnable {
    * */
    String handleNewSource(String html){
 	   newSource = handle(html,"class","info");
-	   newSource = newSource.substring(0, 4);
+	   if(newSource.length() >= 4)
+		   newSource = newSource.substring(0, 4);
 //	   System.out.println(officeName);
 	   return newSource;
    }
@@ -263,10 +296,12 @@ public class CDSB implements Runnable {
     * */
    String handleCategroy(String html){
 	   categroy = handle(html ,"width","57%");
-	   categroy = categroy.substring(10, 19);
-	   categroy = categroy.replaceAll("\\s*", "");
-	   categroy = categroy.substring(5,categroy.length());
-	   System.out.println(categroy);
+	   if(categroy.length() >= 19){
+		   categroy = categroy.substring(10, 19);
+		   categroy = categroy.replaceAll("\\s*", "");
+		   categroy = categroy.substring(5,categroy.length());
+	   }
+//	   System.out.println(categroy);
 	   return categroy;
 	   
    }
@@ -275,8 +310,10 @@ public class CDSB implements Runnable {
   * */
    String handleOriginalCategroy(String html){
 	   originalCategroy = handle(html ,"width","57%");
-	   originalCategroy = originalCategroy.substring(10, 19);
-	   originalCategroy = originalCategroy.replaceAll("\\s*", "");
+	   if(originalCategroy.length() >= 19){
+		   originalCategroy = originalCategroy.substring(10, 19);
+		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
+	   }
 	   return originalCategroy;
    }
    /*
@@ -287,22 +324,26 @@ public class CDSB implements Runnable {
 	   
 	   CRUT crut = new CRUT();
 	   CDSB cdsb = new CDSB(url);
-	   crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleOriginalTitle(cdsb.text), cdsb.handleTitleContent(cdsb.text),
+//	   if(cdsb.text != null){
+//		System.out.println(cdsb.text);   
+	   System.out.println(url);
+	   		crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleOriginalTitle(cdsb.text), cdsb.handleTitleContent(cdsb.text),
 			   cdsb.handleTime(cdsb.text),cdsb.handleContent(cdsb.text),
 			   cdsb.handleNewSource(cdsb.text), cdsb.handleOriginalSource(cdsb.text),
 			   cdsb.handleCategroy(cdsb.text), cdsb.handleOriginalCategroy(cdsb.text),
-			   url,cdsb.handleImage(cdsb.text));
+			   cdsb.hanleUrl(),cdsb.handleImage(cdsb.text));
+//	   }
    }
    
    
 
 	public static void main(String[] args) throws Exception {
     	
-    	String url1 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
-    	String url2 = "http://paper.people.com.cn/rmrb/html/2014-09/05/nw.D110000renmrb_20140905_1-01.htm";
-    	String url3 =  "http://www.csdn.net";
-    	CDSB T = new CDSB(url1);
-    	T.handleImage(T.text);
+//    	String url3 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
+//    	String url2 = "http://paper.people.com.cn/rmrb/html/2014-09/05/nw.D110000renmrb_20140905_1-01.htm";
+    	String url1 = "http://e.chengdu.cn/html/2014-10/16/content_493041.htm";
+//    	CDSB T = new CDSB(url3);
+    	memory(url1);
     	
     	String s = "sfsafsa98u8swf8i98wufwe";
 //    	System.out.println(s.replaceAll("[^0-9]", ""));

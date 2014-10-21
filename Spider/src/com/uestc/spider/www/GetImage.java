@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 public class GetImage {  
   
     // 地址  
+	public static int imageNum = 1;
     public String URL ; 
     public String urll = "http://e.chengdu.cn/";  //可配置
     public String fileName ;
@@ -100,6 +101,7 @@ public class GetImage {
             Matcher matcher = Pattern.compile(IMGSRC_REG).matcher(image);  
             while (matcher.find()) { 
 //            	System.out.println(matcher.group());
+//            	if(listImgSrc.contains(matcher.group().substring(0, matcher.group().length() - 1)))
                 listImgSrc.add(matcher.group().substring(0, matcher.group().length() - 1));  
             }  
         }  
@@ -113,15 +115,38 @@ public class GetImage {
      */  
     private Vector<String> Download(List<String> listImgSrc) {
     	Vector<String> name = new Vector<String>();
-        try {  
+        try {
+//        	System.out.println("kaishi");
             for (int i = 1 ; i < listImgSrc.size();i++ ) { 
+//            	System.out.println("qqq");
 //            	System.out.println(url+"tttt");
             	String url = listImgSrc.get(i);
                 String imageName = url.substring(url.lastIndexOf("."), url.length());  
                 URL uri = new URL(url);  
-                InputStream in = uri.openStream();  
-                FileOutputStream fo = new FileOutputStream(new File(".\\image",fileName+"00"+i+""+imageName)); 
-                name.add(fileName+"00"+i+""+imageName);
+                InputStream in = uri.openStream();
+                FileOutputStream fo;
+//                System.out.println("tttttt");
+                if(imageNum < 10){
+                	
+                	fo = new FileOutputStream(new File(".\\image",fileName+"000"+imageNum+"000"+i+""+imageName)); 
+                	name.add(fileName+"000"+imageNum+"000"+i+""+imageName);
+//                	System.out.println("11111");
+                }else if(imageNum < 100){
+                	
+                	fo = new FileOutputStream(new File(".\\image",fileName+"00"+imageNum+"000"+i+""+imageName));
+                	name.add(fileName+"00"+imageNum+"000"+i+""+imageName);
+//                	System.out.println("222222");
+                }else if(imageNum < 1000){
+                	
+                	fo = new FileOutputStream(new File(".\\image",fileName+"0"+imageNum+"000"+i+""+imageName));
+                	name.add(fileName+"0"+imageNum+"000"+i+""+imageName);
+//                	System.out.println("33333333");
+                }else{
+                	fo = new FileOutputStream(new File(".\\image",fileName+imageNum+"000"+i+""+imageName));
+                	name.add(fileName+imageNum+"000"+i+""+imageName);
+//                	System.out.println("4444444");
+                }
+                
                 byte[] buf = new byte[1024];  
                 int length = 0;  
 //                System.out.println("开始下载:" + url);  
@@ -148,8 +173,15 @@ public class GetImage {
         List<String> imgUrl = getImageUrl(html);  
         //获取图片src地址  
         List<String> imgSrc = getImageSrc(imgUrl);  
+        imageNum ++;
         //下载图片  
        return Download(imgSrc);
         
+    }
+    
+    public static void main(String args[]) throws Exception{
+    	GetImage test =  new GetImage();
+    	test.getImage(test.getHTML("http://e.chengdu.cn/html/2014-09/04/content_486943.htm"));
+    	
     }
 }  
