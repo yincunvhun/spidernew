@@ -42,7 +42,7 @@ public class GetLink {
 //		this.url = url;
 //	}
 	//该url参数必须是某一板块的themeurl 不能使某一个具体新闻的themeurl
-	public void getLink(String themeUrl) throws ParserException{
+	public void getLink(String themeUrl){
 		int state ;
 		try{
 			HttpURLConnection httpUrlConnection = (HttpURLConnection) new URL(themeUrl).openConnection(); //创建连接
@@ -61,55 +61,62 @@ public class GetLink {
 		if(state != 200 && state != 201){
 			return;
 		}
-		Parser parser = new Parser(themeUrl);
-		parser.setEncoding("utf-8");
-		NodeList nodeList = parser.extractAllNodesThatMatch(new NodeFilter(){
-			public boolean accept(Node node)
-            {
-              if (node instanceof LinkTag)// 标记
-                return true;
-              return false;
-            }
+		try{
+			Parser parser = new Parser(themeUrl);
+			parser.setEncoding("utf-8");
+			NodeList nodeList = parser.extractAllNodesThatMatch(new NodeFilter(){
+				public boolean accept(Node node)
+				{
+					if (node instanceof LinkTag)// 标记
+						return true;
+					return false;
+				}
 			
-		});
-		//
-		//新闻板块的正则表达式
-		Pattern newPage = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm");
-		//新闻内容的正则表达式
-		Pattern newContent = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm");
-		//PDF正则表达式
-		Pattern newPdf = Pattern.compile("http://e.chengdu.cn/page/[0-9]{1}/[0-9]{4}-[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{10}_pdf.pdf");
+			});
+		
+			//
+			//新闻板块的正则表达式
+			Pattern newPage = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm");
+			//新闻内容的正则表达式
+			Pattern newContent = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm");
+			//PDF正则表达式
+			Pattern newPdf = Pattern.compile("http://e.chengdu.cn/page/[0-9]{1}/[0-9]{4}-[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{10}_pdf.pdf");
 		
 		//获取一个网页所有的主题url 内容url pdf url
-		for (int i = 0; i < nodeList.size(); i++)
-	      {
+			for (int i = 0; i < nodeList.size(); i++)
+			{
 			
-	        LinkTag n = (LinkTag) nodeList.elementAt(i);
-//	        System.out.print(n.getStringText() + "==>> ");
-//	        System.out.println(n.extractLink());
-	        //某一版
-	        Matcher themeMatcher = newPage.matcher(n.extractLink());
-	        //具体的内容
-	        Matcher contentMatcher = newContent.matcher(n.extractLink());
-	        //PDF
-	        Matcher pdfMatcher = newPdf.matcher(n.extractLink());
+				LinkTag n = (LinkTag) nodeList.elementAt(i);
+//	        	System.out.print(n.getStringText() + "==>> ");
+//	       	 	System.out.println(n.extractLink());
+				//某一版
+				Matcher themeMatcher = newPage.matcher(n.extractLink());
+				//具体的内容
+				Matcher contentMatcher = newContent.matcher(n.extractLink());
+				//PDF
+				Matcher pdfMatcher = newPdf.matcher(n.extractLink());
 	        
-	        if(!linkVisit.contains(n.extractLink())){
-	        		if(themeMatcher.find()){
-	        			linkTheme.offer(n.extractLink());
-	        			linkVisit.offer(n.extractLink());
-	        		}
-	        		if(contentMatcher.find()){
-	        			linkContent.offer(n.extractLink());
-	        			linkVisit.offer(n.extractLink());
-	        		}
-	        		if(pdfMatcher.find()){
-	        			linkPdf.offer(n.extractLink());
-	        			linkVisit.offer(n.extractLink());
-	        		}
+				if(!linkVisit.contains(n.extractLink())){
+	        			if(themeMatcher.find()){
+	        				linkTheme.offer(n.extractLink());
+	        				linkVisit.offer(n.extractLink());
+	        			}
+	        			if(contentMatcher.find()){
+	        				linkContent.offer(n.extractLink());
+	        				linkVisit.offer(n.extractLink());
+	        			}
+	        			if(pdfMatcher.find()){
+	        				linkPdf.offer(n.extractLink());
+	        				linkVisit.offer(n.extractLink());
+	        			}
 	        	
-	        }
-	      }
+				}
+			}
+		}catch(ParserException e){
+			return ;
+		}catch(Exception e){
+			return ;
+		}
 	}
 	
 	
