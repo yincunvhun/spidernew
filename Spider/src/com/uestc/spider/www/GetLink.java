@@ -50,12 +50,12 @@ public class GetLink {
 			httpUrlConnection.disconnect();
 		}catch (MalformedURLException e) {
 //          e.printStackTrace();
-			System.out.println("ssssss");
+			System.out.println("网络慢，已经无法正常链接，无法获取新闻");
 			return;
 		} catch (IOException e) {
           // TODO Auto-generated catch block
 //          e.printStackTrace();
-			System.out.println("tttttttt");
+			System.out.println("网络超级慢，已经无法正常链接，无法获取新闻");
 			return ;
       }
 		if(state != 200 && state != 201){
@@ -111,6 +111,10 @@ public class GetLink {
 	        			}
 	        	
 				}
+				
+				themeMatcher = null;
+				contentMatcher = null;
+				pdfMatcher = null;
 			}
 		}catch(ParserException e){
 			return ;
@@ -133,6 +137,8 @@ public class GetLink {
 //					System.out.println(s);
 					CDSB cdsb = new CDSB(s.toString());
 					cdsb.memory(s.toString());
+					s = null;
+					cdsb = null;
 				}
 //				System.out.println("我正在把获取的新闻存入数据库...");
 			}
@@ -144,25 +150,26 @@ public class GetLink {
 	
 	
 	public void result(int year,int month ,int day) throws Exception{
-		String s1 = "http://e.chengdu.cn/html/2014-0";
-		String s2 = "/node_2.htm";
-		String s3 = "/";
+		StringBuffer s1 = new StringBuffer("http://e.chengdu.cn/html/2014-0");
+		StringBuffer s2 = new StringBuffer("/node_2.htm");
+		StringBuffer s3 = new StringBuffer("/");
 		for(int j  = 1 ; j < 10 ;j ++){
-			
+			StringBuffer url = new StringBuffer();
 			for(int i = 1 ; i < 32 ;i++){
-				String url;
+//				String url;
 				if(i < 10)
-					url = s1+j +s3+"0"+i+s2;
+					url = url.append(s1).append(j).append(s3).append("0").append(i).append(s2);
 				else
-					url = s1+j+s3+i+s2;
+					url = url.append(s1).append(j).append(s3).append(i).append(s2);
 				
 //			System.out.println(url);
-				allWeWillDo(url);   
+				allWeWillDo(url.toString());   
 			//清空已经访问的link列表，即每天的新闻爬取存储后要对所有访问过的链接进行清理，节约内存
 				linkVisit.clear();
 				
 			
 			}
+			url = null;
 			System.gc();
 		}
 	}

@@ -43,8 +43,8 @@ public class CRUT {
 		db = mg.getDB("cdsb");
 		//获取users DBCollection；如果默认没有创建，mongodb会自动创建
 		users = db.getCollection("cg");
-		
-		gd = new GridFS(db);
+//connect reset!!! 需要处理一下	 根本不需要啊不需要啊
+//		gd = new GridFS(db);
 //		System.out.println("我被执行啦");
 	}
 	//删除数据库

@@ -175,7 +175,11 @@ public class GetImage {
         List<String> imgSrc = getImageSrc(imgUrl);  
         imageNum ++;
         //обтьм╪ф╛  
-       return Download(imgSrc);
+        Vector<String> result = Download(imgSrc);
+        //gc
+        imgUrl.clear();imgUrl = null;
+        imgSrc.clear();imgSrc = null ;
+       return result;
         
     }
     

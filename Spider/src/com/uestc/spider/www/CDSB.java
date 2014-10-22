@@ -327,11 +327,13 @@ public class CDSB implements Runnable {
 //	   if(cdsb.text != null){
 //		System.out.println(cdsb.text);   
 	   System.out.println(url);
-	   		crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleOriginalTitle(cdsb.text), cdsb.handleTitleContent(cdsb.text),
+	   crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleOriginalTitle(cdsb.text), cdsb.handleTitleContent(cdsb.text),
 			   cdsb.handleTime(cdsb.text),cdsb.handleContent(cdsb.text),
 			   cdsb.handleNewSource(cdsb.text), cdsb.handleOriginalSource(cdsb.text),
 			   cdsb.handleCategroy(cdsb.text), cdsb.handleOriginalCategroy(cdsb.text),
 			   cdsb.hanleUrl(),cdsb.handleImage(cdsb.text));
+	   crut =null;
+	   cdsb =null;
 //	   }
    }
    
