@@ -25,13 +25,13 @@ import org.htmlparser.util.ParserException;
 public class GetLink {
 	
 //	public String url;
-	//上一期
+	//上一期，为了扩展
 	public Queue<String> linkLast = new LinkedList<String>();
-	//下一期
+	//下一期 扩展
 	public Queue<String> linkNext = new LinkedList<String>();
 	//保存主题链接
 	public Queue<String> linkTheme = new LinkedList<String>();
-	//pdf
+	//pdf 扩展
 	public Queue<String> linkPdf = new LinkedList<String>();
 	//保存每个主题内容的链接
 	public Queue<String> linkContent = new LinkedList<String>();
@@ -87,8 +87,8 @@ public class GetLink {
 			{
 			
 				LinkTag n = (LinkTag) nodeList.elementAt(i);
-//	        	System.out.print(n.getStringText() + "==>> ");
-//	       	 	System.out.println(n.extractLink());
+	        	System.out.print(n.getStringText() + "==>> ");
+	       	 	System.out.println(n.extractLink());
 				//某一版
 				Matcher themeMatcher = newPage.matcher(n.extractLink());
 				//具体的内容
@@ -174,9 +174,11 @@ public class GetLink {
 		}
 	}
 	public static void main(String args[]) throws Exception{
-		long start = System.currentTimeMillis();    
+		long start = System.currentTimeMillis();
+		String url ="http://www.wccdaily.com.cn/shtml/hxdsb/20141021/index.shtml" ;
 		GetLink test = new GetLink();
-		test.result(0, 0, 0);
+		test.getLink(url);
+//		test.result(0, 0, 0);
 //		String url = "http://e.chengdu.cn/html/2014-10/16/node_2.htm";
 //		System.out.println(" 我正在努力搜索新闻...");
 //		test.allWeWillDo(url);

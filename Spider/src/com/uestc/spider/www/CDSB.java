@@ -39,7 +39,7 @@ public class CDSB implements Runnable {
     BufferedReader bufferedReader;
     String url;              		//要处理的url
     String text = "";       		 //存储url的html内容
-    String nameSource = "cdsb";
+    String nameSource = "cdsb";       //新闻来源
 
     public String title;  			//新闻标题
     public String titleContent;     //新闻内容标题
@@ -54,6 +54,16 @@ public class CDSB implements Runnable {
     
     public String categroy ;            //新闻类别
     public String originalCategroy ; //新闻原始分类
+    
+    private String bqTitle[] = {"class","bt_title"};   //新闻标题网页标签
+    private String[] bqContent = {"class","bt_con"} ; // 新闻内容网页标签
+    private String[] bqDate = {"class","riq"} ;     //时间标签"class","header-today"
+    private String[] bqNewSource ={"name","author"} ; //新闻来源标签
+    private String[] bqCategroy = {"class","s_left"};
+    private String bqBuf = "华西都市报" ;              //过滤内容，如- 成都商报|成都商报电子版|成都商报官方网站 以及
+    
+    private String ENCODE = "gb2312";
+    
     public int state = 0;
   
     public CDSB(String url) {
@@ -64,7 +74,7 @@ public class CDSB implements Runnable {
         
         } catch (Exception e) {
         	
-        	e.printStackTrace();
+//        	e.printStackTrace();
         }
   
         try {
@@ -120,7 +130,7 @@ public class CDSB implements Runnable {
   
         try {
             inputStream = httpUrlConnection.getInputStream(); //读取输入流
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8")); 
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, ENCODE)); 
             String string;
             StringBuffer sb = new StringBuffer();
             while ((string = bufferedReader.readLine()) != null) {
@@ -152,7 +162,7 @@ public class CDSB implements Runnable {
 	   NodeFilter filter = new HasAttributeFilter(one);
 	   String buf = "";
 	   try{
-		    Parser parser = Parser.createParser(html, "GB2312");
+		    Parser parser = Parser.createParser(html, ENCODE);
 	   		NodeList nodes = parser.extractAllNodesThatMatch(filter);
 	   		
 	   		if(nodes!=null) {
@@ -177,7 +187,7 @@ public class CDSB implements Runnable {
 	   NodeFilter filter = new HasAttributeFilter(one,two);
 	   String buf = "";
 	   try{
-		    Parser parser = Parser.createParser(html, "GB2312");
+		    Parser parser = Parser.createParser(html, ENCODE);
 	   		NodeList nodes = parser.extractAllNodesThatMatch(filter);
 	   		
 	   		if(nodes!=null) {
@@ -198,9 +208,9 @@ public class CDSB implements Runnable {
   * 新闻标题
   * */ 
  String handleOriginalTitle(String html){
-	   originalTitle = handle(html,"title");
+	   originalTitle = handle(html,bqTitle[0],bqTitle[1]);
 //	   title += handle(html,"class","content-title");
-//	   System.out.println(title);
+	   System.out.println(originalTitle);
 	   return originalTitle;
    }
  /*
@@ -212,10 +222,10 @@ public class CDSB implements Runnable {
 	 return titleContent;
  }
  String handleTitle(String html){
-	 title = handle(html,"title");
+	 title = handle(html,bqTitle[0],bqTitle[1]);
 	 if(title != null && title != "")
-		 title = title.replace(" - 成都商报|成都商报电子版|成都商报官方网站", "");
-//	 System.out.println(title);
+		 title = title.replace(bqBuf, "");
+	 System.out.println(title);
 	 return title;
  }
  String hanleUrl(){
@@ -226,9 +236,9 @@ public class CDSB implements Runnable {
  * */
    String handleContent(String html){
 	   
-	   content = handle(html,"id","ozoom");
+	   content = handle(html,bqContent[0],bqContent[1]);
 //	   content = content.replaceAll("\\n", "");
-//	   System.out.println(content);
+	   System.out.println(content);
 	   return content;
    }
  /*
@@ -246,7 +256,7 @@ public class CDSB implements Runnable {
 	   for(String s: dateSourceNumNum){
 		   buf = buf.append(load).append(new StringBuffer(s)).append(symbol);
 	   }
-	   if(buf.toString() == "")
+	   if(buf.toString() == ""||buf.toString() == null)
 		   buf = new StringBuffer("No Images");
 	   return buf.toString();
 	   
@@ -264,56 +274,57 @@ public class CDSB implements Runnable {
     * */
    String handleTime(String html){
 	
-	   time = handle(html,"class","header-today");
+	   time = handle(html,bqDate[0],bqDate[1]);
 //	   time = time.substring(0,12);  //只获取时间
-	   if(time.contains(" "))
-		   time = time.replaceAll("\\s", "");
-//	   System.out.println(time);
+	   time = time.replaceAll("[^0-9]", "");
+	   System.out.println(time);
 	   return time;
    }
   /*
    * 获取原始报社名称
-   * 
+   * 有待改进，目前无法改进啊。。。貌似有点麻烦
    * */
    String handleNewSource(String html){
-	   newSource = handle(html,"class","info");
-	   if(newSource.length() >= 4)
-		   newSource = newSource.substring(0, 4);
-//	   System.out.println(officeName);
-	   return newSource;
+	   
+	   newSource = handle(html,bqNewSource[0],bqNewSource[1]);
+//	   if(newSource.length() >= 4)
+//		   newSource = newSource.substring(0, 4);
+	   System.out.println(newSource);
+	   return bqBuf;
    }
    /*
     * 新闻来源
     * */
    public String handleOriginalSource(String html) {
 	// TODO Auto-generated method stub
-	originalSource = handle(html,"class","info");
+	originalSource = handle(html,bqNewSource[0],bqNewSource[1]);
 //	System.out.println(cgSource);
-	return originalSource;
+	return bqBuf;
 }
    /*
     * 版面属性
     * */
    String handleCategroy(String html){
-	   categroy = handle(html ,"width","57%");
-	   if(categroy.length() >= 19){
-		   categroy = categroy.substring(10, 19);
-		   categroy = categroy.replaceAll("\\s*", "");
-		   categroy = categroy.substring(5,categroy.length());
-	   }
-//	   System.out.println(categroy);
-	   return categroy;
+	   categroy = handle(html ,bqCategroy[0],bqCategroy[1]);
+//	   if(categroy.length() >= 10){
+//		   categroy = categroy.substring(9, 10);
+//		   categroy = categroy.replaceAll("\\s*", "");
+//		   categroy = categroy.substring(5,categroy.length());
+//	   }
+
+	   System.out.println(categroy);
+	   return categroy.substring(categroy.lastIndexOf("：")+1,categroy.length());
 	   
    }
  /*
   * 新闻原始类别
   * */
    String handleOriginalCategroy(String html){
-	   originalCategroy = handle(html ,"width","57%");
-	   if(originalCategroy.length() >= 19){
-		   originalCategroy = originalCategroy.substring(10, 19);
-		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
-	   }
+	   originalCategroy = handle(html ,bqCategroy[0],bqCategroy[1]);
+//	   if(originalCategroy.length() >= 19){
+//		   originalCategroy = originalCategroy.substring(10, 19);
+//		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
+//	   }
 	   return originalCategroy;
    }
    /*
@@ -344,8 +355,11 @@ public class CDSB implements Runnable {
 //    	String url3 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
 //    	String url2 = "http://paper.people.com.cn/rmrb/html/2014-09/05/nw.D110000renmrb_20140905_1-01.htm";
     	String url1 = "http://e.chengdu.cn/html/2014-10/16/content_493041.htm";
-//    	CDSB T = new CDSB(url3);
-    	memory(url1);
+    	String url2 = "http://www.wccdaily.com.cn/shtml/hxdsb/20141021/251241.shtml";
+//    	CDSB T = new CDSB(url2);
+//    	System.out.println(T.text);
+//    	T.handleOriginalTitle(T.text);
+    	memory(url2);
     	
     	String s = "sfsafsa98u8swf8i98wufwe";
 //    	System.out.println(s.replaceAll("[^0-9]", ""));
