@@ -106,6 +106,8 @@ public class CDSB implements Runnable {
         	} catch (InterruptedException e) {
 //        		e.printStackTrace();
         	}
+        }else{
+        	System.out.println("无法正常访问链接");
         }
   
 //        System.out.println("----------end------------");
@@ -134,6 +136,7 @@ public class CDSB implements Runnable {
             String string;
             StringBuffer sb = new StringBuffer();
             while ((string = bufferedReader.readLine()) != null) {
+//            	System.out.println("xxxxxxx");
             	sb.append(string);
             	sb.append("\n");
             }
@@ -356,10 +359,11 @@ public class CDSB implements Runnable {
 //    	String url2 = "http://paper.people.com.cn/rmrb/html/2014-09/05/nw.D110000renmrb_20140905_1-01.htm";
     	String url1 = "http://e.chengdu.cn/html/2014-10/16/content_493041.htm";
     	String url2 = "http://www.wccdaily.com.cn/shtml/hxdsb/20141021/251241.shtml";
-//    	CDSB T = new CDSB(url2);
+    	String url3 = "http://www.wccdaily.com.cn/shtml/hxdsb/20141023/251684.shtml";
+    	CDSB T = new CDSB(url3);
 //    	System.out.println(T.text);
 //    	T.handleOriginalTitle(T.text);
-    	memory(url2);
+    	memory(url3);
     	
     	String s = "sfsafsa98u8swf8i98wufwe";
 //    	System.out.println(s.replaceAll("[^0-9]", ""));
