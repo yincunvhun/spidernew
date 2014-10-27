@@ -28,7 +28,7 @@ public class CRUT {
 	static private DB db ;
 	static private DBCollection users;
 	static private GridFS gd;
-	static private String newSource = "hxdsb"; //数据库名称 华西都市报 成都商报等
+	static private String newSource = "TODAY"; //数据库名称 华西都市报 成都商报等
 	static private String newTable  = "cg"; //数据库表名
 	
 	public CRUT(){

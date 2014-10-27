@@ -38,6 +38,9 @@ public class GetLink {
 	//保存已经访问过的链接
 	public Queue<String> linkVisit = new LinkedList<String>();
 	
+	//匹配link的正则表达式
+//	private String zzContent ="http://www.wccdaily.com.cn/shtml/hxdsb/20141024/[0-9]{6}.shtml";
+	
 //	public GetLink(String url){
 //		this.url = url;
 //	}
@@ -78,7 +81,7 @@ public class GetLink {
 			//新闻板块的正则表达式
 			Pattern newPage = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm");
 			//新闻内容的正则表达式
-			Pattern newContent = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm");
+			Pattern newContent = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm"); //"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm");
 			//PDF正则表达式
 			Pattern newPdf = Pattern.compile("http://e.chengdu.cn/page/[0-9]{1}/[0-9]{4}-[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{10}_pdf.pdf");
 		
@@ -87,8 +90,8 @@ public class GetLink {
 			{
 			
 				LinkTag n = (LinkTag) nodeList.elementAt(i);
-	        	System.out.print(n.getStringText() + "==>> ");
-	       	 	System.out.println(n.extractLink());
+//	        	System.out.print(n.getStringText() + "==>> ");
+//	       	 	System.out.println(n.extractLink());
 				//某一版
 				Matcher themeMatcher = newPage.matcher(n.extractLink());
 				//具体的内容
@@ -150,17 +153,17 @@ public class GetLink {
 	
 	
 	public void result(int year,int month ,int day) throws Exception{
-		StringBuffer s1 = new StringBuffer("http://e.chengdu.cn/html/2014-0");
+		StringBuffer s1 = new StringBuffer("http://e.chengdu.cn/html/2014-10");
 		StringBuffer s2 = new StringBuffer("/node_2.htm");
 		StringBuffer s3 = new StringBuffer("/");
-		for(int j  = 1 ; j < 10 ;j ++){
+		for(int j  = 1 ; j < 2 ;j ++){
 			StringBuffer url = new StringBuffer();
-			for(int i = 1 ; i < 32 ;i++){
+			for(int i = 24 ; i < 25 ;i++){
 //				String url;
 				if(i < 10)
 					url = url.append(s1).append(j).append(s3).append("0").append(i).append(s2);
 				else
-					url = url.append(s1).append(j).append(s3).append(i).append(s2);
+					url = url.append(s1).append(s3).append(i).append(s2); //url.append(s1).append(j).append(s3).append(i).append(s2);
 				
 //			System.out.println(url);
 				allWeWillDo(url.toString());   
@@ -173,12 +176,41 @@ public class GetLink {
 			System.gc();
 		}
 	}
+	
+	public void hxdsb(){
+		
+		StringBuffer s1 = new StringBuffer("http://www.wccdaily.com.cn/shtml/hxdsb/20141024/va");
+		StringBuffer s2 = new StringBuffer(".shtml");
+		
+		for(int i = 1 ; i < 37 ; i++){
+			StringBuffer theme = new StringBuffer();
+			if(i < 10)
+				theme = theme.append(s1).append(0).append(i).append(s2);
+			else
+				theme = theme.append(s1).append(i).append(s2);
+			System.out.println(theme);
+			getLink(theme.toString());
+			while(!linkContent.isEmpty()){
+				StringBuffer s = new StringBuffer(linkContent.poll());
+//				i++;
+				System.out.println(s);
+				CDSB cdsb = new CDSB(s.toString());
+				cdsb.memory(s.toString());
+				s = null;
+				cdsb = null;
+			}
+//			theme = null;
+		}
+		
+	}
+	
 	public static void main(String args[]) throws Exception{
 		long start = System.currentTimeMillis();
-		String url ="http://www.wccdaily.com.cn/shtml/hxdsb/20141021/index.shtml" ;
+		String url ="http://www.wccdaily.com.cn/shtml/hxdsb/20141024/va01.shtml" ;
 		GetLink test = new GetLink();
-		test.getLink(url);
-//		test.result(0, 0, 0);
+//		test.hxdsb();
+//		test.getLink(url);
+		test.result(0, 0, 0);
 //		String url = "http://e.chengdu.cn/html/2014-10/16/node_2.htm";
 //		System.out.println(" 我正在努力搜索新闻...");
 //		test.allWeWillDo(url);
