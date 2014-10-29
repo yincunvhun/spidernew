@@ -38,9 +38,12 @@ public class GetLink {
 	//保存已经访问过的链接
 	public Queue<String> linkVisit = new LinkedList<String>();
 	
-	//匹配link的正则表达式
-//	private String zzContent ="http://www.wccdaily.com.cn/shtml/hxdsb/20141024/[0-9]{6}.shtml";
-	
+	//匹配主题link theme
+	private String newThemeLink = "http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm";
+	//匹配内容link 
+	private String newContentLink ="http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,6}.htm";
+	//匹配PDF link 预留
+	private String newPdfLink;
 //	public GetLink(String url){
 //		this.url = url;
 //	}
@@ -79,11 +82,11 @@ public class GetLink {
 		
 			//
 			//新闻板块的正则表达式
-			Pattern newPage = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm");
+			Pattern newPage = Pattern.compile(newThemeLink); //"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm"
 			//新闻内容的正则表达式
-			Pattern newContent = Pattern.compile("http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm"); //"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm");
+			Pattern newContent = Pattern.compile(newContentLink); //"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm"
 			//PDF正则表达式
-			Pattern newPdf = Pattern.compile("http://e.chengdu.cn/page/[0-9]{1}/[0-9]{4}-[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{10}_pdf.pdf");
+//			Pattern newPdf = Pattern.compile("http://e.chengdu.cn/page/[0-9]{1}/[0-9]{4}-[0-9]{2}/[0-9]{2}/[0-9]{2}/[0-9]{10}_pdf.pdf");
 		
 		//获取一个网页所有的主题url 内容url pdf url
 			for (int i = 0; i < nodeList.size(); i++)
@@ -97,7 +100,7 @@ public class GetLink {
 				//具体的内容
 				Matcher contentMatcher = newContent.matcher(n.extractLink());
 				//PDF
-				Matcher pdfMatcher = newPdf.matcher(n.extractLink());
+//				Matcher pdfMatcher = newPdf.matcher(n.extractLink());
 	        
 				if(!linkVisit.contains(n.extractLink())){
 	        			if(themeMatcher.find()){
@@ -108,16 +111,16 @@ public class GetLink {
 	        				linkContent.offer(n.extractLink());
 	        				linkVisit.offer(n.extractLink());
 	        			}
-	        			if(pdfMatcher.find()){
-	        				linkPdf.offer(n.extractLink());
-	        				linkVisit.offer(n.extractLink());
-	        			}
+//	        			if(pdfMatcher.find()){
+//	        				linkPdf.offer(n.extractLink());
+//	        				linkVisit.offer(n.extractLink());
+//	        			}
 	        	
 				}
 				
 				themeMatcher = null;
 				contentMatcher = null;
-				pdfMatcher = null;
+//				pdfMatcher = null;
 			}
 		}catch(ParserException e){
 			return ;
@@ -207,10 +210,12 @@ public class GetLink {
 	public static void main(String args[]) throws Exception{
 		long start = System.currentTimeMillis();
 		String url ="http://www.wccdaily.com.cn/shtml/hxdsb/20141024/va01.shtml" ;
+		String url1 = "http://www.chinamil.com.cn/jfjbmap/content/2014-10/27/node_2.htm";
 		GetLink test = new GetLink();
+		test.allWeWillDo(url1);
 //		test.hxdsb();
-//		test.getLink(url);
-		test.result(0, 0, 0);
+//		test.getLink(url1);
+//		test.result(0, 0, 0);
 //		String url = "http://e.chengdu.cn/html/2014-10/16/node_2.htm";
 //		System.out.println(" 我正在努力搜索新闻...");
 //		test.allWeWillDo(url);
