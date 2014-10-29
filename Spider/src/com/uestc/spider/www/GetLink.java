@@ -93,8 +93,8 @@ public class GetLink {
 			{
 			
 				LinkTag n = (LinkTag) nodeList.elementAt(i);
-//	        	System.out.print(n.getStringText() + "==>> ");
-//	       	 	System.out.println(n.extractLink());
+	        	System.out.print(n.getStringText() + "==>> ");
+	       	 	System.out.println(n.extractLink());
 				//某一版
 				Matcher themeMatcher = newPage.matcher(n.extractLink());
 				//具体的内容
@@ -209,12 +209,13 @@ public class GetLink {
 	
 	public static void main(String args[]) throws Exception{
 		long start = System.currentTimeMillis();
-		String url ="http://www.wccdaily.com.cn/shtml/hxdsb/20141024/va01.shtml" ;
+		String url ="http://www.wccdaily.com.cn/shtml/hxdsb/20141029/va01.shtml" ;
 		String url1 = "http://www.chinamil.com.cn/jfjbmap/content/2014-10/27/node_2.htm";
+		String test1 = "http://zqb.cyol.com/html/2014-10/29/nbs.D110000zgqnb_01.htm";
 		GetLink test = new GetLink();
-		test.allWeWillDo(url1);
+//		test.allWeWillDo(url1);
 //		test.hxdsb();
-//		test.getLink(url1);
+		test.getLink(url);
 //		test.result(0, 0, 0);
 //		String url = "http://e.chengdu.cn/html/2014-10/16/node_2.htm";
 //		System.out.println(" 我正在努力搜索新闻...");
