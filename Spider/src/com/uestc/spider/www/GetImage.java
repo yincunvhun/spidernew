@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class GetImage {  
   
     // 地址  
-	public static int imageNum = 1;
+	public static int imageNum = 1; //图片命名从1开始
     public String URL ; 
     public String urll = "http://e.chengdu.cn/";  //可配置
     public String fileName ;
