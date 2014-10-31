@@ -23,12 +23,12 @@ public class GetImage {
     public String urll = "http://e.chengdu.cn/";  //可配置
     public String fileName ;
     // 编码  
-    private static final String ECODING = "UTF-8";  
+    private static  String ECODING = "UTF-8";  
     // 获取img标签正则  
 //    private static final String IMGURL_REG = "<img src=(.*?)[^>]*?>";
-    private static final String IMGURL_REG = "img src=\"(.*?)res(.*?)attpic_brief.jpg\"";
+    private static  String IMGURL_REG ; //= "img src=\"(.*?)res(.*?)attpic_brief.jpg\"";
     // 获取src路径的正则  
-    private static final String IMGSRC_REG = "http:\"?(.*?)(\"|>|\\s+)";   //待修改~~
+    private static  String IMGSRC_REG ; // = "http:\"?(.*?)(\"|>|\\s+)";   //待修改~~
 //    private static final String IMGSRC_REG = "http://e.chengdu.cn/res/(.*?)_attpic_brief.jpg";
   
       
@@ -45,9 +45,10 @@ public class GetImage {
 //        cm.Download(imgSrc);  
 //    }  
       
-//    public GetImage(String url){
-//    	this.URL = url;
-//    }  
+    public GetImage(String imgurl ,String imgsrc){
+    	this.IMGURL_REG = imgurl;
+    	this.IMGSRC_REG = imgsrc;
+    }  
     /*** 
      * 获取HTML内容 
      *  
@@ -184,8 +185,8 @@ public class GetImage {
     }
     
     public static void main(String args[]) throws Exception{
-    	GetImage test =  new GetImage();
-    	test.getImage(test.getHTML("http://e.chengdu.cn/html/2014-09/04/content_486943.htm"));
+//    	GetImage test =  new GetImage();
+//    	test.getImage(test.getHTML("http://e.chengdu.cn/html/2014-09/04/content_486943.htm"));
     	
     }
 }  

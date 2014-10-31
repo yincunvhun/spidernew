@@ -19,7 +19,8 @@ public class JustForToday extends Thread {
 		date = now.get(Calendar.DATE)+1;
 		System.out.println(year+" "+month+" "+date );
 	}
-	public void cdsbToday(){
+	public void cdsbToday(String newthemelink ,String newcontentlink,String[] bqtitle,String[] bqcontent,
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable){
 		
 		StringBuffer s1 = new StringBuffer();
 		s1 = s1.append("http://e.chengdu.cn/html/").append(year).append("-").
@@ -48,7 +49,8 @@ public class JustForToday extends Thread {
 
 				flag = false ;
 				try {
-					new GetLink().allWeWillDo(s1.toString());
+					new GetLink(newthemelink,newcontentlink).allWeWillDo(s1.toString(),bqtitle,bqcontent,
+				    		bqdate,bqnewsource ,bqcategroy ,bqbuf,newsource , newtable);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 //					e.printStackTrace();
@@ -77,6 +79,6 @@ public class JustForToday extends Thread {
 	public static void main(String[] args){
 		
 		JustForToday today = new JustForToday();
-		today.cdsbToday();
+//		today.cdsbToday();
 	}
 }

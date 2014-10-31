@@ -39,14 +39,15 @@ public class GetLink {
 	public Queue<String> linkVisit = new LinkedList<String>();
 	
 	//匹配主题link theme
-	private String newThemeLink = "http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm";
+	private String newThemeLink ;  // = "http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm";
 	//匹配内容link 
-	private String newContentLink ="http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,6}.htm";
+	private String newContentLink ; // ="http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,6}.htm";
 	//匹配PDF link 预留
 	private String newPdfLink;
-//	public GetLink(String url){
-//		this.url = url;
-//	}
+	public GetLink(String newthemelink ,String newcontentlink){
+		this.newThemeLink = newthemelink ;
+		this.newContentLink = newcontentlink ;
+	}
 	//该url参数必须是某一板块的themeurl 不能使某一个具体新闻的themeurl
 	public void getLink(String themeUrl){
 		int state ;
@@ -130,7 +131,8 @@ public class GetLink {
 	}
 	
 	
-	public void allWeWillDo(String themeUrl) throws Exception{
+	public void allWeWillDo(String themeUrl,String[] bqtitle,String[] bqcontent,
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable) throws Exception{
 		
 		int i = 0;
 		linkTheme.offer(themeUrl);
@@ -141,8 +143,8 @@ public class GetLink {
 					StringBuffer s = new StringBuffer(linkContent.poll());
 					i++;
 //					System.out.println(s);
-					CDSB cdsb = new CDSB(s.toString());
-					cdsb.memory(s.toString());
+					CDSB cdsb = new CDSB(s.toString() , bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf);
+					cdsb.memory(s.toString(), bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,newsource,newtable);
 					s = null;
 					cdsb = null;
 				}
@@ -155,7 +157,8 @@ public class GetLink {
 	}
 	
 	
-	public void result(int year,int month ,int day) throws Exception{
+	public void result(int year,int month ,int day,String[] bqtitle,String[] bqcontent,
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable) throws Exception{
 		StringBuffer s1 = new StringBuffer("http://e.chengdu.cn/html/2014-10");
 		StringBuffer s2 = new StringBuffer("/node_2.htm");
 		StringBuffer s3 = new StringBuffer("/");
@@ -169,7 +172,8 @@ public class GetLink {
 					url = url.append(s1).append(s3).append(i).append(s2); //url.append(s1).append(j).append(s3).append(i).append(s2);
 				
 //			System.out.println(url);
-				allWeWillDo(url.toString());   
+				allWeWillDo(url.toString(),bqtitle,bqcontent,
+			    		bqdate,bqnewsource ,bqcategroy ,bqbuf,newsource , newtable);   
 			//清空已经访问的link列表，即每天的新闻爬取存储后要对所有访问过的链接进行清理，节约内存
 				linkVisit.clear();
 				
@@ -180,7 +184,8 @@ public class GetLink {
 		}
 	}
 	
-	public void hxdsb(){
+	public void hxdsb(String[] bqtitle,String[] bqcontent,
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable){
 		
 		StringBuffer s1 = new StringBuffer("http://www.wccdaily.com.cn/shtml/hxdsb/20141024/va");
 		StringBuffer s2 = new StringBuffer(".shtml");
@@ -197,8 +202,8 @@ public class GetLink {
 				StringBuffer s = new StringBuffer(linkContent.poll());
 //				i++;
 				System.out.println(s);
-				CDSB cdsb = new CDSB(s.toString());
-				cdsb.memory(s.toString());
+				CDSB cdsb = new CDSB(s.toString(),bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf);
+				cdsb.memory(s.toString(),bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,newsource,newtable);
 				s = null;
 				cdsb = null;
 			}
@@ -212,10 +217,10 @@ public class GetLink {
 		String url ="http://www.wccdaily.com.cn/shtml/hxdsb/20141029/va01.shtml" ;
 		String url1 = "http://www.chinamil.com.cn/jfjbmap/content/2014-10/27/node_2.htm";
 		String test1 = "http://zqb.cyol.com/html/2014-10/29/nbs.D110000zgqnb_01.htm";
-		GetLink test = new GetLink();
+//		GetLink test = new GetLink();
 //		test.allWeWillDo(url1);
 //		test.hxdsb();
-		test.getLink(url);
+//		test.getLink(url);
 //		test.result(0, 0, 0);
 //		String url = "http://e.chengdu.cn/html/2014-10/16/node_2.htm";
 //		System.out.println(" 我正在努力搜索新闻...");

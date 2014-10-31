@@ -28,11 +28,13 @@ public class CRUT {
 	static private DB db ;
 	static private DBCollection users;
 	static private GridFS gd;
-	static private String newSource = "TODAY"; //数据库名称 华西都市报 成都商报等
-	static private String newTable  = "cg"; //数据库表名
+	static private String newSource ;  // = "TODAY"; //数据库名称 华西都市报 成都商报等
+	static private String newTable  ; //= "cg"; //数据库表名
 	
-	public CRUT(){
+	public CRUT(String newsource,String newtable){
 		
+		this.newSource = newsource ;
+		this.newTable = newtable ;
 		try {
 			
             mg = new Mongo();
@@ -147,7 +149,7 @@ public class CRUT {
   	 
     public static void main(String args[]){
     	
-    	CRUT test = new CRUT();
+    	CRUT test = new CRUT("TODAY" ,"CG");
 //		for(String name:mg.getDatabaseNames())
 //			System.out.println(name);
 //		String url1 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";

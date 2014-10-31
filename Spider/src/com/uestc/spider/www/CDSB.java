@@ -55,21 +55,28 @@ public class CDSB implements Runnable {
     public String categroy ;            //新闻类别
     public String originalCategroy ; //新闻原始分类
     
-    private String bqTitle[] = {"title"};   //新闻标题网页标签"class","bt_title"
-    private String[] bqContent = {"id","ozoom"} ; // 新闻内容网页标签"bt_con" id="ozoom
-    private String[] bqDate = {"class","header-today"} ;     //时间标签"class","header-today" "riq"
-    private String[] bqNewSource ={"class","info"} ; //新闻来源标签 name"author"
-    private String[] bqCategroy = {"width","57%"};  //新闻分类width="57%" "class","s_left"
-    private String bqBuf = "- 成都商报|成都商报电子版|成都商报官方网站" ;// "华西都市报" ;              //过滤内容，如- 成都商报|成都商报电子版|成都商报官方网站 以及
+    private String bqTitle[] ;     //= {"title"};   //新闻标题网页标签"class","bt_title"
+    private String[] bqContent ;    //= {"id","ozoom"} ; // 新闻内容网页标签"bt_con" id="ozoom
+    private String[] bqDate    ;   //=  {"class","header-today"} ;     //时间标签"class","header-today" "riq"
+    private String[] bqNewSource ;    //={"class","info"} ; //新闻来源标签 name"author"
+    private String[] bqCategroy ;     //= {"width","57%"};  //新闻分类width="57%" "class","s_left"
+    private String bqBuf     ;        // = "- 成都商报|成都商报电子版|成都商报官方网站" ;// "华西都市报" ;              //过滤内容，如- 成都商报|成都商报电子版|成都商报官方网站 以及
     
     private String ENCODE = "utf-8"; //gb2312
     
     public int state = 0;
   
-    public CDSB(String url) {
+    public CDSB(String url, String[] bqtitle,String[] bqcontent,
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf) {
   
         try {
         	this.url = url;
+        	this.bqTitle = bqtitle;
+        	this.bqContent = bqcontent ;
+        	this.bqDate = bqdate;
+        	this.bqNewSource = bqnewsource;
+        	this.bqCategroy = bqcategroy;
+        	this.bqBuf = bqbuf;
 //        	this.baseUrl = ;
         
         } catch (Exception e) {
@@ -246,11 +253,12 @@ public class CDSB implements Runnable {
   * 命名处理待改进
   * */
    public String handleImage(String html){
-	   
+	   String imageurl = "";     //"img src=\"(.*?)res(.*?)attpic_brief.jpg\""
+	   String imagescr = "";     //"http:\"?(.*?)(\"|>|\\s+)"
 	   StringBuffer buf = new StringBuffer("");
 	   StringBuffer load = new StringBuffer("C:\\Users\\Administrator\\git\\spider\\Spider\\image\\");
 	   StringBuffer symbol = new StringBuffer(";");
-	   GetImage image = new GetImage();
+	   GetImage image = new GetImage(imageurl,imagescr);    //图片命名正则表达式
 	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+" "+ nameSource;
 	   Vector<String> dateSourceNumNum = image.getImage(html); 
 	   for(String s: dateSourceNumNum){
@@ -331,11 +339,13 @@ public class CDSB implements Runnable {
    /*
     * 新闻相关内容的存储
     * 标题 时间  内容 报社名称
+    * newsource 为创建的数据库名称 ；newtable 为创建的数据库表名
     * */
-   public static void memory(String url){
+   public static void memory(String url,String[] bqtitle,String[] bqcontent,
+   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String newsource ,String newtable){
 	   
-	   CRUT crut = new CRUT();
-	   CDSB cdsb = new CDSB(url);
+	   CRUT crut = new CRUT(newsource ,newtable);
+	   CDSB cdsb = new CDSB(url,bqtitle,bqcontent,bqdate,bqnewsource,bqcategroy,bqbuf);
 //	   if(cdsb.text != null){
 //		System.out.println(cdsb.text);   
 	   System.out.println(url);
@@ -360,7 +370,7 @@ public class CDSB implements Runnable {
 //    	CDSB T = new CDSB(url2);
 //    	System.out.println(T.text);
 //    	T.handleOriginalTitle(T.text);
-    	memory(url1);
+//    	memory(url1);
     	
     	String s = "sfsafsa98u8swf8i98wufwe";
 //    	System.out.println(s.replaceAll("[^0-9]", ""));
