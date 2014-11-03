@@ -253,12 +253,14 @@ public class CDSB implements Runnable {
   * 命名处理待改进
   * */
    public String handleImage(String html){
+	   String url = "";
 	   String imageurl = "";     //"img src=\"(.*?)res(.*?)attpic_brief.jpg\""
 	   String imagescr = "";     //"http:\"?(.*?)(\"|>|\\s+)"
+	   String imageBuf = "";
 	   StringBuffer buf = new StringBuffer("");
 	   StringBuffer load = new StringBuffer("C:\\Users\\Administrator\\git\\spider\\Spider\\image\\");
 	   StringBuffer symbol = new StringBuffer(";");
-	   GetImage image = new GetImage(imageurl,imagescr);    //图片命名正则表达式
+	   GetImage image = new GetImage(url,imageurl,imagescr,imageBuf);    //图片命名正则表达式
 	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+" "+ nameSource;
 	   Vector<String> dateSourceNumNum = image.getImage(html); 
 	   for(String s: dateSourceNumNum){

@@ -44,9 +44,18 @@ public class GetLink {
 	private String newContentLink ; // ="http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,6}.htm";
 	//匹配PDF link 预留
 	private String newPdfLink;
-	public GetLink(String newthemelink ,String newcontentlink){
+	
+	private String newurl1 ;         //"http://e.chengdu.cn/html/2014-10"
+	private String newurl2 ;         // "-"
+	private String newurl3 ;         // "/"
+	private String newurl4 ;         //"/node_2.htm"
+	public GetLink(String newthemelink ,String newcontentlink,String s1,String s2 ,String s3,String s4){
 		this.newThemeLink = newthemelink ;
 		this.newContentLink = newcontentlink ;
+		this.newurl1 = s1 ;
+		this.newurl2 = s2 ;
+		this.newurl3 = s3 ;
+		this.newurl4 = s4 ;
 	}
 	//该url参数必须是某一板块的themeurl 不能使某一个具体新闻的themeurl
 	public void getLink(String themeUrl){
@@ -159,17 +168,17 @@ public class GetLink {
 	
 	public void result(int year,int month ,int day,String[] bqtitle,String[] bqcontent,
     		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable) throws Exception{
-		StringBuffer s1 = new StringBuffer("http://e.chengdu.cn/html/2014-10");
-		StringBuffer s2 = new StringBuffer("/node_2.htm");
-		StringBuffer s3 = new StringBuffer("/");
+		StringBuffer s1 = new StringBuffer(newurl1);  //newurl1 = "http://e.chengdu.cn/html/2014-10"
+		StringBuffer s2 = new StringBuffer(newurl3);          //newurl3 = "/"
+		StringBuffer s3 = new StringBuffer(newurl4);    //newurl4 = "/node_2.htm"
 		for(int j  = 1 ; j < 2 ;j ++){
 			StringBuffer url = new StringBuffer();
 			for(int i = 24 ; i < 25 ;i++){
 //				String url;
 				if(i < 10)
-					url = url.append(s1).append(j).append(s3).append("0").append(i).append(s2);
+					url = url.append(s1).append(j).append(s2).append("0").append(i).append(s3);
 				else
-					url = url.append(s1).append(s3).append(i).append(s2); //url.append(s1).append(j).append(s3).append(i).append(s2);
+					url = url.append(s1).append(s2).append(i).append(s3); //url.append(s1).append(j).append(s3).append(i).append(s2);
 				
 //			System.out.println(url);
 				allWeWillDo(url.toString(),bqtitle,bqcontent,

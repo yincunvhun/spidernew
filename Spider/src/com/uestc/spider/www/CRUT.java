@@ -28,13 +28,13 @@ public class CRUT {
 	static private DB db ;
 	static private DBCollection users;
 	static private GridFS gd;
-	static private String newSource ;  // = "TODAY"; //数据库名称 华西都市报 成都商报等
-	static private String newTable  ; //= "cg"; //数据库表名
+	static private String DBName ;  // = "TODAY"; //数据库名称 华西都市报 成都商报等
+	static private String DBTable  ; //= "cg"; //数据库表名
 	
-	public CRUT(String newsource,String newtable){
+	public CRUT(String dbname,String dbtable){
 		
-		this.newSource = newsource ;
-		this.newTable = newtable ;
+		this.DBName = dbname ;
+		this.DBTable = dbtable;
 		try {
 			
             mg = new Mongo();
@@ -44,9 +44,9 @@ public class CRUT {
             e.printStackTrace();
         }
 		//获取cdsb DB；如果默认没有创建，mongodb会自动创建
-		db = mg.getDB(newSource);
+		db = mg.getDB(DBName);
 		//获取users DBCollection；如果默认没有创建，mongodb会自动创建
-		users = db.getCollection(newTable);
+		users = db.getCollection(DBTable);
 //connect reset!!! 需要处理一下	 根本不需要啊不需要啊
 //		gd = new GridFS(db);
 //		System.out.println("我被执行啦");

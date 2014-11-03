@@ -19,14 +19,15 @@ public class JustForToday extends Thread {
 		date = now.get(Calendar.DATE)+1;
 		System.out.println(year+" "+month+" "+date );
 	}
-	public void cdsbToday(String newthemelink ,String newcontentlink,String[] bqtitle,String[] bqcontent,
-    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable){
+	public void cdsbToday(String newthemelink ,String newcontentlink,String newurl1,String newurl2 ,String newurl3 ,String newurl4 ,
+			String[] bqtitle,String[] bqcontent,String[] bqdate,String[] bqnewsource ,
+			String[] bqcategroy ,String bqbuf,String newsource ,String newtable){
 		
 		StringBuffer s1 = new StringBuffer();
-		s1 = s1.append("http://e.chengdu.cn/html/").append(year).append("-").
-				append(month).append("/").append(date).append("/node_2.htm");
-		System.out.println(s1);
-		boolean flag = true ;
+		s1 = s1.append(newurl1).append(year).append(newurl2). 
+				append(month).append(newurl3).append(date).append(newurl4); //newurl1 = "http://e.chengdu.cn/html/"
+		System.out.println(s1);                                               //newurl2 = "-" newurl3 = "/"
+		boolean flag = true ;                                                  //newurl4 = "/node_2.htm"
 		int state = 0;
 		while(flag){
 			HttpURLConnection httpUrlConnection;
@@ -49,8 +50,8 @@ public class JustForToday extends Thread {
 
 				flag = false ;
 				try {
-					new GetLink(newthemelink,newcontentlink).allWeWillDo(s1.toString(),bqtitle,bqcontent,
-				    		bqdate,bqnewsource ,bqcategroy ,bqbuf,newsource , newtable);
+					new GetLink(newthemelink,newcontentlink,newurl1,newurl2,newurl3,newurl4).
+					allWeWillDo(s1.toString(),bqtitle,bqcontent,bqdate,bqnewsource ,bqcategroy ,bqbuf,newsource , newtable);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 //					e.printStackTrace();

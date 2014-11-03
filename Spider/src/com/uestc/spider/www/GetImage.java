@@ -20,8 +20,9 @@ public class GetImage {
     // 地址  
 	public static int imageNum = 1; //图片命名从1开始
     public String URL ; 
-    public String urll = "http://e.chengdu.cn/";  //可配置
+    public String url ; // = "http://e.chengdu.cn/";  //可配置
     public String fileName ;
+    public String imageBuf;
     // 编码  
     private static  String ECODING = "UTF-8";  
     // 获取img标签正则  
@@ -45,9 +46,11 @@ public class GetImage {
 //        cm.Download(imgSrc);  
 //    }  
       
-    public GetImage(String imgurl ,String imgsrc){
+    public GetImage(String url ,String imgurl ,String imgsrc,String imageBuf){
+    	this.url = url;
     	this.IMGURL_REG = imgurl;
     	this.IMGSRC_REG = imgsrc;
+    	this.imageBuf = imageBuf;
     }  
     /*** 
      * 获取HTML内容 
@@ -95,9 +98,9 @@ public class GetImage {
     private List<String> getImageSrc(List<String> listImageUrl) {  
         List<String> listImgSrc = new ArrayList<String>();  
         for (String image : listImageUrl) {
-        	
-        	if(image.contains("../../../"))
-        		image = image.replace("../../../",urll );
+        	// 获取完整url
+        	if(image.contains(imageBuf))
+        		image = image.replace(imageBuf,url );
 //        	System.out.println(image+"222");
             Matcher matcher = Pattern.compile(IMGSRC_REG).matcher(image);  
             while (matcher.find()) { 
