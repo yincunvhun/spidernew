@@ -22,7 +22,7 @@ public class GetImage {
     public String URL ; 
     public String url ; // = "http://e.chengdu.cn/";  //可配置
     public String fileName ;
-    public String imageBuf;
+    public String imageBuf;      //"../../../"
     // 编码  
     private static  String ECODING = "UTF-8";  
     // 获取img标签正则  

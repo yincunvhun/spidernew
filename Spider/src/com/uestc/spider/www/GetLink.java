@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -45,7 +46,8 @@ public class GetLink {
 	//匹配PDF link 预留
 	private String newPdfLink;
 	
-	private String newurl1 ;         //"http://e.chengdu.cn/html/2014-10"
+	//获取主题链接
+	private String newurl1 ;         //"http://e.chengdu.cn/html/"
 	private String newurl2 ;         // "-"
 	private String newurl3 ;         // "/"
 	private String newurl4 ;         //"/node_2.htm"
@@ -165,15 +167,29 @@ public class GetLink {
 	
 	}
 	
-	
+	//获取一年的新闻
 	public void result(int year,int month ,int day,String[] bqtitle,String[] bqcontent,
     		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable) throws Exception{
-		StringBuffer s1 = new StringBuffer(newurl1);  //newurl1 = "http://e.chengdu.cn/html/2014-10"
+		Calendar now = Calendar.getInstance();
+		int year1 = now.get(Calendar.YEAR);
+		if(year > year1)
+			return;
+		if(month > 12 && month < 1)
+			return;
+		if(day > 31 && day < 1)
+			return;
+		
+		StringBuffer s1 = new StringBuffer(newurl1);  //newurl1 = "http://e.chengdu.cn/html/" newurl2 = -
 		StringBuffer s2 = new StringBuffer(newurl3);          //newurl3 = "/"
 		StringBuffer s3 = new StringBuffer(newurl4);    //newurl4 = "/node_2.htm"
-		for(int j  = 1 ; j < 2 ;j ++){
+		for(int j  = 1 ; j < 13 ;j ++){
+			
+			if(j < 10)
+				s1 = s1.append(year).append(newurl2).append("0");  //http://e.chengdu.cn/html/2014-0
+			else
+				s1 = s1.append(year).append(newurl2);
 			StringBuffer url = new StringBuffer();
-			for(int i = 24 ; i < 25 ;i++){
+			for(int i = 1 ; i < 32 ;i++){
 //				String url;
 				if(i < 10)
 					url = url.append(s1).append(j).append(s2).append("0").append(i).append(s3);

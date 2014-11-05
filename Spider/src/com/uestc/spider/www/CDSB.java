@@ -27,40 +27,40 @@ import org.htmlparser.util.ParserException;
 import org.htmlparser.visitors.HtmlPage;
 
 /*
- * Õë¶Ô³É¶¼ÉÌ±¨µÄĞÂÎÅÅÀ³æ
- * »ñÈ¡³É¶¼ÉÌ±¨Ò»ÌìµÄËùÓĞĞÂÎÅ
- * ĞÂÎÅ°üÀ¨ ĞÂÎÅÌâÄ¿£¬·¢²¼Ê±¼ä£¬ĞÂÎÅÄÚÈİ£¬±¨µÀ¼ÇÕßÒÔ¼°ÆäPDF¸ñÊ½µÄĞÂÎÅÎÄ¼ş
- * ¿ÉÅäÖÃ£¡£¡
+ * é’ˆå¯¹æˆéƒ½å•†æŠ¥çš„æ–°é—»çˆ¬è™«
+ * è·å–æˆéƒ½å•†æŠ¥ä¸€å¤©çš„æ‰€æœ‰æ–°é—»
+ * æ–°é—»åŒ…æ‹¬ æ–°é—»é¢˜ç›®ï¼Œå‘å¸ƒæ—¶é—´ï¼Œæ–°é—»å†…å®¹ï¼ŒæŠ¥é“è®°è€…ä»¥åŠå…¶PDFæ ¼å¼çš„æ–°é—»æ–‡ä»¶
+ * å¯é…ç½®ï¼ï¼
  * */
 public class CDSB implements Runnable {
 
 	HttpURLConnection httpUrlConnection;
     InputStream inputStream;
     BufferedReader bufferedReader;
-    String url;              		//Òª´¦ÀíµÄurl
-    String text = "";       		 //´æ´¢urlµÄhtmlÄÚÈİ
-    String nameSource = "cdsb";       //ĞÂÎÅÀ´Ô´
+    String url;              		//è¦å¤„ç†çš„url
+    String text = "";       		 //å­˜å‚¨urlçš„htmlå†…å®¹
+    String nameSource = "cdsb";       //æ–°é—»æ¥æº
 
-    public String title;  			//ĞÂÎÅ±êÌâ
-    public String titleContent;     //ĞÂÎÅÄÚÈİ±êÌâ
-    public String originalTitle;    //Î´´¦ÀíÔ­Ê¼±êÌâ
+    public String title;  			//æ–°é—»æ ‡é¢˜
+    public String titleContent;     //æ–°é—»å†…å®¹æ ‡é¢˜
+    public String originalTitle;    //æœªå¤„ç†åŸå§‹æ ‡é¢˜
     
-    public String content;			//ĞÂÎÅÄÚÈİ
+    public String content;			//æ–°é—»å†…å®¹
     
-    public String time;             //ĞÂÎÅ·¢²¼Ê±¼ä
+    public String time;             //æ–°é—»å‘å¸ƒæ—¶é—´
     
-    public String newSource;       //ĞÂÎÅÀ´Ô´
-    public String originalSource ;       //Î´´¦ÀíÔ­Ê¼ĞÂÎÅÀ´Ô´
+    public String newSource;       //æ–°é—»æ¥æº
+    public String originalSource ;       //æœªå¤„ç†åŸå§‹æ–°é—»æ¥æº
     
-    public String categroy ;            //ĞÂÎÅÀà±ğ
-    public String originalCategroy ; //ĞÂÎÅÔ­Ê¼·ÖÀà
+    public String categroy ;            //æ–°é—»ç±»åˆ«
+    public String originalCategroy ; //æ–°é—»åŸå§‹åˆ†ç±»
     
-    private String bqTitle[] ;     //= {"title"};   //ĞÂÎÅ±êÌâÍøÒ³±êÇ©"class","bt_title"
-    private String[] bqContent ;    //= {"id","ozoom"} ; // ĞÂÎÅÄÚÈİÍøÒ³±êÇ©"bt_con" id="ozoom
-    private String[] bqDate    ;   //=  {"class","header-today"} ;     //Ê±¼ä±êÇ©"class","header-today" "riq"
-    private String[] bqNewSource ;    //={"class","info"} ; //ĞÂÎÅÀ´Ô´±êÇ© name"author"
-    private String[] bqCategroy ;     //= {"width","57%"};  //ĞÂÎÅ·ÖÀàwidth="57%" "class","s_left"
-    private String bqBuf     ;        // = "- ³É¶¼ÉÌ±¨|³É¶¼ÉÌ±¨µç×Ó°æ|³É¶¼ÉÌ±¨¹Ù·½ÍøÕ¾" ;// "»ªÎ÷¶¼ÊĞ±¨" ;              //¹ıÂËÄÚÈİ£¬Èç- ³É¶¼ÉÌ±¨|³É¶¼ÉÌ±¨µç×Ó°æ|³É¶¼ÉÌ±¨¹Ù·½ÍøÕ¾ ÒÔ¼°
+    private String bqTitle[] ;     //= {"title"};   //æ–°é—»æ ‡é¢˜ç½‘é¡µæ ‡ç­¾"class","bt_title"
+    private String[] bqContent ;    //= {"id","ozoom"} ; // æ–°é—»å†…å®¹ç½‘é¡µæ ‡ç­¾"bt_con" id="ozoom
+    private String[] bqDate    ;   //=  {"class","header-today"} ;     //æ—¶é—´æ ‡ç­¾"class","header-today" "riq"
+    private String[] bqNewSource ;    //={"class","info"} ; //æ–°é—»æ¥æºæ ‡ç­¾ name"author"
+    private String[] bqCategroy ;     //= {"width","57%"};  //æ–°é—»åˆ†ç±»width="57%" "class","s_left"
+    private String bqBuf     ;        // = "- æˆéƒ½å•†æŠ¥|æˆéƒ½å•†æŠ¥ç”µå­ç‰ˆ|æˆéƒ½å•†æŠ¥å®˜æ–¹ç½‘ç«™" ;// "åè¥¿éƒ½å¸‚æŠ¥" ;              //è¿‡æ»¤å†…å®¹ï¼Œå¦‚- æˆéƒ½å•†æŠ¥|æˆéƒ½å•†æŠ¥ç”µå­ç‰ˆ|æˆéƒ½å•†æŠ¥å®˜æ–¹ç½‘ç«™ ä»¥åŠ
     
     private String ENCODE = "utf-8"; //gb2312
     
@@ -85,7 +85,7 @@ public class CDSB implements Runnable {
         }
   
         try {
-            httpUrlConnection = (HttpURLConnection) new URL(url).openConnection(); //´´½¨Á¬½Ó
+            httpUrlConnection = (HttpURLConnection) new URL(url).openConnection(); //åˆ›å»ºè¿æ¥
             state = httpUrlConnection.getResponseCode();
             httpUrlConnection.disconnect();
         } catch (MalformedURLException e) {
@@ -105,7 +105,7 @@ public class CDSB implements Runnable {
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 //				e1.printStackTrace();
-			} //´´½¨Á¬½Ó
+			} //åˆ›å»ºè¿æ¥
         	Thread thread = new Thread(this);
         	thread.start();
         	try {
@@ -127,16 +127,16 @@ public class CDSB implements Runnable {
         }
   
         try {
-            httpUrlConnection.setUseCaches(true); //Ê¹ÓÃ»º´æ
-            httpUrlConnection.connect();           //½¨Á¢Á¬½Ó  Á´½Ó³¬Ê±´¦Àí
+            httpUrlConnection.setUseCaches(true); //ä½¿ç”¨ç¼“å­˜
+            httpUrlConnection.connect();           //å»ºç«‹è¿æ¥  é“¾æ¥è¶…æ—¶å¤„ç†
         } catch (IOException e) {
 //            e.printStackTrace();
 //        	continue;
-        	System.out.println("¸ÃÁ´½Ó·ÃÎÊ³¬Ê±...");
+        	System.out.println("è¯¥é“¾æ¥è®¿é—®è¶…æ—¶...");
         }
   
         try {
-            inputStream = httpUrlConnection.getInputStream(); //¶ÁÈ¡ÊäÈëÁ÷
+            inputStream = httpUrlConnection.getInputStream(); //è¯»å–è¾“å…¥æµ
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream, ENCODE)); 
             String string;
             StringBuffer sb = new StringBuffer();
@@ -154,7 +154,7 @@ public class CDSB implements Runnable {
                 httpUrlConnection.disconnect();
             } catch (IOException e) {
 //                e.printStackTrace();
-            	System.out.println("Á´½Ó¹Ø±Õ³öÏÖÎÊÌâ...");
+            	System.out.println("é“¾æ¥å…³é—­å‡ºç°é—®é¢˜...");
             }
   
         }
@@ -163,7 +163,7 @@ public class CDSB implements Runnable {
 
  
    /*
-     	Ö»ĞèÒªÒ»¸ö²ÎÊı¾Í¿ÉÒÔÅĞ¶ÏµÄ±êÇ©£¬±ÈÈçtitle 
+     	åªéœ€è¦ä¸€ä¸ªå‚æ•°å°±å¯ä»¥åˆ¤æ–­çš„æ ‡ç­¾ï¼Œæ¯”å¦‚title 
     * */
    String handle(String html ,String one){
 	   NodeFilter filter = new HasAttributeFilter(one);
@@ -188,7 +188,7 @@ public class CDSB implements Runnable {
    }
    
   /*
-   * ĞèÒªÁ½¸ö²ÎÊı²ÅÄÜÅĞ¶Ï×¼È·µÄÄÚÈİ£º±ÈÈç content-title £¬ozoomµÈ
+   * éœ€è¦ä¸¤ä¸ªå‚æ•°æ‰èƒ½åˆ¤æ–­å‡†ç¡®çš„å†…å®¹ï¼šæ¯”å¦‚ content-title ï¼Œozoomç­‰
    */
    String handle(String html ,String one ,String two){
 	   NodeFilter filter = new HasAttributeFilter(one,two);
@@ -212,45 +212,55 @@ public class CDSB implements Runnable {
 	   return buf ;
    }
  /*
-  * ĞÂÎÅ±êÌâ
+  * æ–°é—»æ ‡é¢˜
   * */ 
  String handleOriginalTitle(String html){
+	 if(bqTitle[1].equals(""))
 	   originalTitle = handle(html,bqTitle[0]); //,bqTitle[1]
-	   originalTitle += handle(html,"class","content-title");
+	 else
+	   originalTitle = handle(html,bqTitle[0],bqTitle[1]);
 	   System.out.println(originalTitle);
 	   return originalTitle;
    }
  /*
-  * ĞÂÎÅÄÚÈİ±êÌâ
+  * æ–°é—»å†…å®¹æ ‡é¢˜
   * 
   * */
  String handleTitleContent(String html){
-	 titleContent = handle(html,"class","content-title");
+	 if(bqTitle[1].equals(""))
+		 titleContent = handle(html,bqTitle[0]);
+	 else
+		 titleContent = handle(html,bqTitle[0],bqTitle[1]);
 	 return titleContent;
  }
+ 
  String handleTitle(String html){
-	 title = handle(html,bqTitle[0]); //,bqTitle[1]
+	 if(bqTitle[1].equals(""))
+		 title = handle(html,bqTitle[0]); //,bqTitle[1]
+	 else
+		 title = handle(html,bqTitle[0],bqTitle[1]);
 	 if(title != null && title != "")
 		 title = title.replace(bqBuf, "");
 	 System.out.println(title);
 	 return title;
  }
- String hanleUrl(){
+ 
+ String handleUrl(){
 	 return url;
  }
 /*
- * ĞÂÎÅÄÚÈİ
+ * æ–°é—»å†…å®¹
  * */
    String handleContent(String html){
 	   
 	   content = handle(html,bqContent[0],bqContent[1]);
 //	   content = content.replaceAll("\\n", "");
-	   System.out.println(content);
+	   System.out.println("sb"+content);
 	   return content;
    }
  /*
-  * ĞÂÎÅÍ¼Æ¬ Í¼Æ¬ÃûÎª£ºÊ±¼ä+ºó×º£¨±ÈÈç£º20140910.jpg£©
-  * ÃüÃû´¦Àí´ı¸Ä½ø
+  * æ–°é—»å›¾ç‰‡ å›¾ç‰‡åä¸ºï¼šæ—¶é—´+åç¼€ï¼ˆæ¯”å¦‚ï¼š20140910.jpgï¼‰
+  * å‘½åå¤„ç†å¾…æ”¹è¿›
   * */
    public String handleImage(String html){
 	   String url = "";
@@ -260,7 +270,7 @@ public class CDSB implements Runnable {
 	   StringBuffer buf = new StringBuffer("");
 	   StringBuffer load = new StringBuffer("C:\\Users\\Administrator\\git\\spider\\Spider\\image\\");
 	   StringBuffer symbol = new StringBuffer(";");
-	   GetImage image = new GetImage(url,imageurl,imagescr,imageBuf);    //Í¼Æ¬ÃüÃûÕıÔò±í´ïÊ½
+	   GetImage image = new GetImage(url,imageurl,imagescr,imageBuf);    //å›¾ç‰‡å‘½åæ­£åˆ™è¡¨è¾¾å¼
 	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+" "+ nameSource;
 	   Vector<String> dateSourceNumNum = image.getImage(html); 
 	   for(String s: dateSourceNumNum){
@@ -273,75 +283,76 @@ public class CDSB implements Runnable {
    }
    
   /*
-  * ĞÂÎÅpdf
+  * æ–°é—»pdf
   * */
    void handlePDF(String url){
 	   
 	   new GetPdf(url);
    }
    /*
-    * ĞÂÎÅ·¢²¼Ê±¼ä
+    * æ–°é—»å‘å¸ƒæ—¶é—´
     * */
    String handleTime(String html){
 	
 	   time = handle(html,bqDate[0],bqDate[1]);
-//	   time = time.substring(0,12);  //Ö»»ñÈ¡Ê±¼ä
+//	   time = time.substring(0,12);  //åªè·å–æ—¶é—´
 	   time = time.replaceAll("[^0-9]", "");
 	   System.out.println(time);
 	   return time;
    }
   /*
-   * »ñÈ¡Ô­Ê¼±¨ÉçÃû³Æ
-   * ÓĞ´ı¸Ä½ø£¬Ä¿Ç°ÎŞ·¨¸Ä½ø°¡¡£¡£¡£Ã²ËÆÓĞµãÂé·³
+   * è·å–åŸå§‹æŠ¥ç¤¾åç§°
+   * æœ‰å¾…æ”¹è¿›ï¼Œç›®å‰æ— æ³•æ”¹è¿›å•Šã€‚ã€‚ã€‚è²Œä¼¼æœ‰ç‚¹éº»çƒ¦
    * */
    String handleNewSource(String html){
 	   
-	   newSource = handle(html,bqNewSource[0],bqNewSource[1]);
-	   if(newSource.length() >= 4)
-		   newSource = newSource.substring(0, 4);
-	   System.out.println(newSource);
-	   return newSource;
+//	   newSource = handle(html,bqNewSource[0],bqNewSource[1]);
+//	   if(newSource.length() >= 4)
+//		   newSource = newSource.substring(0, 4);
+//	   System.out.println(newSource);
+//	   newSource = html ;
+	   return bqNewSource[0];
    }
    /*
-    * ĞÂÎÅÀ´Ô´
+    * æ–°é—»æ¥æº
     * */
    public String handleOriginalSource(String html) {
 	// TODO Auto-generated method stub
-	originalSource = handle(html,bqNewSource[0],bqNewSource[1]);
+//	originalSource = handle(html,bqNewSource[0],bqNewSource[1]);
+//	originalSource = html;
 //	System.out.println(cgSource);
-	return originalSource;
+	return bqNewSource[0]+" ï¼Œ"+bqNewSource[1];
 }
    /*
-    * °æÃæÊôĞÔ
+    * ç‰ˆé¢å±æ€§ "ï¼š"ä¹‹å å³ä¸ºæ‰€éœ€
     * */
    String handleCategroy(String html){
 	   categroy = handle(html ,bqCategroy[0],bqCategroy[1]);
-	   if(categroy.length() >= 19){
-		   categroy = categroy.substring(10, 19);
-		   categroy = categroy.replaceAll("\\s*", "");
-		   categroy = categroy.substring(5,categroy.length());
+	   if(url.contains("http://e.chengdu.cn/")){
+		   categroy = categroy.substring(categroy.lastIndexOf("ï¼š")+1, categroy.lastIndexOf("Â»")-1);
 	   }
-
+	   if(categroy.contains("ï¼š"))
+		   categroy = categroy.substring(categroy.lastIndexOf("ï¼š")+1, categroy.length());
 	   System.out.println(categroy);
-	   return categroy;        //.substring(categroy.lastIndexOf("£º")+1,categroy.length());
+	   return categroy;        //.substring(categroy.lastIndexOf("ï¼š")+1,categroy.length());
 	   
    }
  /*
-  * ĞÂÎÅÔ­Ê¼Àà±ğ
+  * æ–°é—»åŸå§‹ç±»åˆ«
   * */
    String handleOriginalCategroy(String html){
 	   originalCategroy = handle(html ,bqCategroy[0],bqCategroy[1]);
-	   if(originalCategroy.length() >= 19){
-		   originalCategroy = originalCategroy.substring(10, 19);
-		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
-	   }
+//	   if(originalCategroy.length() >= 19){
+//		   originalCategroy = originalCategroy.substring(10, 19);
+//		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
+//	   }
 	   System.out.println(originalCategroy);
 	   return originalCategroy;
    }
    /*
-    * ĞÂÎÅÏà¹ØÄÚÈİµÄ´æ´¢
-    * ±êÌâ Ê±¼ä  ÄÚÈİ ±¨ÉçÃû³Æ
-    * newsource Îª´´½¨µÄÊı¾İ¿âÃû³Æ £»newtable Îª´´½¨µÄÊı¾İ¿â±íÃû
+    * æ–°é—»ç›¸å…³å†…å®¹çš„å­˜å‚¨
+    * æ ‡é¢˜ æ—¶é—´  å†…å®¹ æŠ¥ç¤¾åç§°
+    * newsource ä¸ºåˆ›å»ºçš„æ•°æ®åº“åç§° ï¼›newtable ä¸ºåˆ›å»ºçš„æ•°æ®åº“è¡¨å
     * */
    public static void memory(String url,String[] bqtitle,String[] bqcontent,
    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String newsource ,String newtable){
@@ -355,7 +366,7 @@ public class CDSB implements Runnable {
 			   cdsb.handleTime(cdsb.text),cdsb.handleContent(cdsb.text),
 			   cdsb.handleNewSource(cdsb.text), cdsb.handleOriginalSource(cdsb.text),
 			   cdsb.handleCategroy(cdsb.text), cdsb.handleOriginalCategroy(cdsb.text),
-			   cdsb.hanleUrl(),cdsb.handleImage(cdsb.text));
+			   cdsb.handleUrl(),cdsb.handleImage(cdsb.text));
 	   crut =null;
 	   cdsb =null;
 //	   }
@@ -364,12 +375,23 @@ public class CDSB implements Runnable {
    
 
 	public static void main(String[] args) throws Exception {
-    	
+    	/*
+    	 * String url,String[] bqtitle,String[] bqcontent,
+   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String newsource ,String newtable
+    	 * */
 //    	String url3 = "http://e.chengdu.cn/html/2014-09/10/content_487767.htm";
 //    	String url2 = "http://paper.people.com.cn/rmrb/html/2014-09/05/nw.D110000renmrb_20140905_1-01.htm";
-    	String url1 = "http://e.chengdu.cn/html/2014-10/16/content_493041.htm";
+    	String url1 = "http://e.chengdu.cn/html/2014-10/20/content_493712.htm";
     	String url2 = "http://www.wccdaily.com.cn/shtml/hxdsb/20141021/251241.shtml";
-//    	CDSB T = new CDSB(url2);
+    	
+    	String url3 = "http://epaper.ynet.com/html/2014-11/05/content_94803.htm?div=-1";
+    	String url4 = "http://bjwb.bjd.com.cn/html/2014-11/03/content_229916.htm";
+    	String url5 = "http://bjwb.bjd.com.cn/html/2014-11/03/content_229911.htm";
+    	String url6 = "http://www.cdwb.com.cn/html/2014-11/04/content_2140919.htm";
+    	String[] s1 = {"",""};
+    	String[] s2 = {"class","info"};
+    	CDSB T = new CDSB(url6,s1,s1,s1,s1,s2,"");
+    	T.handleCategroy(T.text);
 //    	System.out.println(T.text);
 //    	T.handleOriginalTitle(T.text);
 //    	memory(url1);
