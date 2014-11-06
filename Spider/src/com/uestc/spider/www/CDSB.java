@@ -62,7 +62,7 @@ public class CDSB implements Runnable {
     private String[] bqCategroy ;     //= {"width","57%"};  //新闻分类width="57%" "class","s_left"
     private String bqBuf     ;        // = "- 成都商报|成都商报电子版|成都商报官方网站" ;// "华西都市报" ;              //过滤内容，如- 成都商报|成都商报电子版|成都商报官方网站 以及
     
-    private String ENCODE = "utf-8"; //gb2312
+    private String ENCODE = "utf-8"; //gb2312 utf-8
     
     public int state = 0;
   
@@ -241,6 +241,8 @@ public class CDSB implements Runnable {
 		 title = handle(html,bqTitle[0],bqTitle[1]);
 	 if(title != null && title != "")
 		 title = title.replace(bqBuf, "");
+	 if(url.contains("newspaper.jfdaily.com/xwcb"))  //新闻晨报
+		 title = title.substring(0, title.lastIndexOf(" "));
 	 System.out.println(title);
 	 return title;
  }
@@ -253,9 +255,15 @@ public class CDSB implements Runnable {
  * */
    String handleContent(String html){
 	   
-	   content = handle(html,bqContent[0],bqContent[1]);
+	   if(bqContent[1].equals(""))
+		   content = handle(html,bqContent[0]);
+	   else
+		   content = handle(html,bqContent[0],bqContent[1]);
+	   if(url.contains("gzdaily.dayoo.com/html")){
+		   content = content.substring(content.indexOf("来源: 广州日报")+8,content.length());
+	   }
 //	   content = content.replaceAll("\\n", "");
-	   System.out.println("sb"+content);
+	   System.out.println(content);
 	   return content;
    }
  /*
@@ -294,9 +302,17 @@ public class CDSB implements Runnable {
     * */
    String handleTime(String html){
 	
-	   time = handle(html,bqDate[0],bqDate[1]);
+	   if(bqDate[1].equals(""))
+		   time = handle(html,bqDate[0]);
+	   else
+		   time = handle(html,bqDate[0],bqDate[1]);
 //	   time = time.substring(0,12);  //只获取时间
-	   time = time.replaceAll("[^0-9]", "");
+	   time = time.replaceAll("[^0-9]", "");  //新闻晨报
+	   if(url.contains("newspaper.jfdaily.com/xwcb"))
+		   time = time.substring(0, 8);
+	   else if(url.contains("http://gzdaily.dayoo.com/html")){
+		   time = time.substring(0, 8);
+		}else;
 	   System.out.println(time);
 	   return time;
    }
@@ -327,12 +343,33 @@ public class CDSB implements Runnable {
     * 版面属性 "："之后 即为所需
     * */
    String handleCategroy(String html){
-	   categroy = handle(html ,bqCategroy[0],bqCategroy[1]);
-	   if(url.contains("http://e.chengdu.cn/")){
+	   if(bqCategroy[1].equals(""))
+		   categroy = handle(html ,bqCategroy[0]);
+	   else
+		   categroy = handle(html ,bqCategroy[0],bqCategroy[1]);
+	   if(url.contains("http://e.chengdu.cn/")){ //商报
 		   categroy = categroy.substring(categroy.lastIndexOf("：")+1, categroy.lastIndexOf("»")-1);
 	   }
+	   else if(url.contains("/www.chinamil.com.cn")){  //解放军报
+		   categroy = categroy.substring(categroy.lastIndexOf("：")+1, categroy.lastIndexOf(" "));
+	   }else if(url.contains("newspaper.jfdaily.com/xwcb")){  //新闻晨报
+		   categroy = categroy.replaceAll("\\s*", "");
+		   categroy = categroy.substring(categroy.indexOf("：")+1,categroy.indexOf("稿"));
+	   }else if(url.contains("gzdaily.dayoo.com/html")){     //广州日报
+		   
+		   categroy = categroy.replaceAll("本版新闻", "");
+	   }else if(url.contains("www.ycwb.com/ePaper/ycwb/html")){ //羊城晚报 
+		   if(categroy.contains("："))
+			   categroy = categroy.substring(categroy.indexOf("：")+1, categroy.indexOf("按日期检索"));
+		   
+	   }else if(url.contains("http://epaper.nandu.com/")){
+		   
+		   categroy = categroy.substring(categroy.indexOf("版名：")+3, categroy.indexOf("字号："));
+	   };
+	   
 	   if(categroy.contains("："))
-		   categroy = categroy.substring(categroy.lastIndexOf("：")+1, categroy.length());
+		   categroy = categroy.substring(categroy.indexOf("：")+1, categroy.length());
+	   categroy = categroy.replaceAll("\\s*", "");
 	   System.out.println(categroy);
 	   return categroy;        //.substring(categroy.lastIndexOf("：")+1,categroy.length());
 	   
@@ -341,12 +378,25 @@ public class CDSB implements Runnable {
   * 新闻原始类别
   * */
    String handleOriginalCategroy(String html){
-	   originalCategroy = handle(html ,bqCategroy[0],bqCategroy[1]);
+	   
+	   if(bqCategroy[1].equals(""))
+		   originalCategroy = handle(html ,bqCategroy[0]);
+	   else
+		   originalCategroy = handle(html ,bqCategroy[0],bqCategroy[1]);
+	   
+	   if(url.contains("www.ycwb.com/ePaper/ycwb/html")){
+		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
+		   originalCategroy = originalCategroy.substring(6, originalCategroy.indexOf("按日期检索"));
+		   
+	   };
 //	   if(originalCategroy.length() >= 19){
 //		   originalCategroy = originalCategroy.substring(10, 19);
 //		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
 //	   }
+	   
+	   originalCategroy = originalCategroy.replaceAll("\\s*", "");
 	   System.out.println(originalCategroy);
+	   
 	   return originalCategroy;
    }
    /*
@@ -388,9 +438,19 @@ public class CDSB implements Runnable {
     	String url4 = "http://bjwb.bjd.com.cn/html/2014-11/03/content_229916.htm";
     	String url5 = "http://bjwb.bjd.com.cn/html/2014-11/03/content_229911.htm";
     	String url6 = "http://www.cdwb.com.cn/html/2014-11/04/content_2140919.htm";
+    	String url7 = "http://www.cdrb.com.cn/html/2014-11/06/content_2141933.htm";
+    	String url8 = "http://www.chinamil.com.cn/jfjbmap/content/2014-11/06/content_92122.htm";
+    	String url9 = "http://xmwb.xinmin.cn/html/2014-11/06/content_5_2.htm";
+    	String url10 = "http://newspaper.jfdaily.com/xwcb/html/2014-11/06/content_33941.htm";
+    	String url11 = "http://newspaper.jfdaily.com/xwcb/html/2014-11/06/content_33936.htm";
+    	String url12 = "http://gzdaily.dayoo.com/html/2014-11/06/content_2790788.htm";
+    	String url13 = "http://www.ycwb.com/ePaper/ycwb/html/2014-11/06/content_574483.htm?div=-1";
+    	String url14 = "http://www.ycwb.com/ePaper/ycwb/html/2014-09/29/content_550830.htm?div=-1";
+    	String url15 = "http://epaper.nandu.com/epaper/A/html/2014-11/06/content_3339541.htm?div=-1";
     	String[] s1 = {"",""};
     	String[] s2 = {"class","info"};
-    	CDSB T = new CDSB(url6,s1,s1,s1,s1,s2,"");
+    	CDSB T = new CDSB(url15,s1,s1,s1,s1,s2,"_南方都市报数字报TT");
+//    	System.out.println(T.text);
     	T.handleCategroy(T.text);
 //    	System.out.println(T.text);
 //    	T.handleOriginalTitle(T.text);

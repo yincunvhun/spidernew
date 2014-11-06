@@ -11,74 +11,141 @@ public class ThreadPoolHandleNews{
 	
 	public void createThreadPool(){
 		/*   
-         * ´´½¨Ïß³Ì³Ø£¬×îĞ¡Ïß³ÌÊıÎª10£¬×î´óÏß³ÌÊıÎª50£¬Ïß³Ì³ØÎ¬»¤Ïß³ÌµÄ¿ÕÏĞÊ±¼äÎª30Ãë£¬   
-         * Ê¹ÓÃ¶ÓÁĞÉî¶ÈÎª20µÄÓĞ½ç¶ÓÁĞ£¬Èç¹ûÖ´ĞĞ³ÌĞòÉĞÎ´¹Ø±Õ£¬ÔòÎ»ÓÚ¹¤×÷¶ÓÁĞÍ·²¿µÄÈÎÎñ½«±»É¾³ı£¬   
-         * È»ºóÖØÊÔÖ´ĞĞ³ÌĞò£¨Èç¹ûÔÙ´ÎÊ§°Ü£¬ÔòÖØ¸´´Ë¹ı³Ì£©£¬ÀïÃæÒÑ¾­¸ù¾İ¶ÓÁĞÉî¶È¶ÔÈÎÎñ¼ÓÔØ½øĞĞÁË¿ØÖÆ¡£   
+         * åˆ›å»ºçº¿ç¨‹æ± ï¼Œæœ€å°çº¿ç¨‹æ•°ä¸º10ï¼Œæœ€å¤§çº¿ç¨‹æ•°ä¸º50ï¼Œçº¿ç¨‹æ± ç»´æŠ¤çº¿ç¨‹çš„ç©ºé—²æ—¶é—´ä¸º30ç§’ï¼Œ   
+         * ä½¿ç”¨é˜Ÿåˆ—æ·±åº¦ä¸º20çš„æœ‰ç•Œé˜Ÿåˆ—ï¼Œå¦‚æœæ‰§è¡Œç¨‹åºå°šæœªå…³é—­ï¼Œåˆ™ä½äºå·¥ä½œé˜Ÿåˆ—å¤´éƒ¨çš„ä»»åŠ¡å°†è¢«åˆ é™¤ï¼Œ   
+         * ç„¶åé‡è¯•æ‰§è¡Œç¨‹åºï¼ˆå¦‚æœå†æ¬¡å¤±è´¥ï¼Œåˆ™é‡å¤æ­¤è¿‡ç¨‹ï¼‰ï¼Œé‡Œé¢å·²ç»æ ¹æ®é˜Ÿåˆ—æ·±åº¦å¯¹ä»»åŠ¡åŠ è½½è¿›è¡Œäº†æ§åˆ¶ã€‚   
          */ 
 		ThreadPoolExecutor cg = new ThreadPoolExecutor(10,50,30,TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(queueDeep),  
                 new ThreadPoolExecutor.DiscardOldestPolicy());
 		/*
-		 * ÊÖ¶¯Ò»¸ö¸öµÄ¼ÓÈë±¨ÉçÅäÖÃ£¬±È½Ï·±Ëö
+		 * æ‰‹åŠ¨ä¸€ä¸ªä¸ªçš„åŠ å…¥æŠ¥ç¤¾é…ç½®ï¼Œæ¯”è¾ƒç¹ç
 		 * */
 	/*	for(int i = 0 ; i < 50 ; i++){
 			
 			try{
 				Thread.sleep(2);
 			}catch(InterruptedException e){
-				System.out.println("ÎÒÊ§ÃßÁË¡£");
+				System.out.println("æˆ‘å¤±çœ äº†ã€‚");
 			}
 			while(getQueueSize(cg.getQueue()) >= queueDeep){
 				
-				System.out.println("¶ÓÁĞÒÑÂú£¬µÈ´ı3ÃëÔÙÌí¼ÓÈÎÎñ");
+				System.out.println("é˜Ÿåˆ—å·²æ»¡ï¼Œç­‰å¾…3ç§’å†æ·»åŠ ä»»åŠ¡");
 				try{
 					Thread.sleep(3000);
 				}catch(InterruptedException e){
-					System.out.println("ÎÒÊ§ÃßÁË¡£");
+					System.out.println("æˆ‘å¤±çœ äº†ã€‚");
 				}
 			}
 			
 		}
 		*/
-		//±±¾©ÇàÄê±¨ ĞÂÎÅ±êÌâ£ºh1  ÄÚÈİ£ºclass="contnt" ÈÕÆÚ£ºclass="fst" ĞÂÎÅÀ´Ô´£º±±¾©ÇàÄê±¨  ĞÂÎÅ·ÖÀà£ºid=PageLink£¬´ı´¦Àí×Ö·û´®Îª""
-		//Í¼Æ¬ÅäÖÃsrc="../../../images/2013-10/30/B02/gly3a1262_b.jpg"£¬imageÕıÔò±í´ï£º"IMG src=\"(.*?)iamges(.*?)_b.jpg\"" Â·¾¶±í´ïÊ½£º"http:\"?(.*?)(\"|>|\\s+)"¸¨Öú×Ö·û´®"http://epaper.ynet.com"
-		//Ö÷ÌâÁ´½Ó£ºhttp://epaper.ynet.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{4,5}.htm ÄÚÈİÁ´½Ó£ºhttp://epaper.ynet.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,6}.htm?div=-1
+		//åŒ—äº¬é’å¹´æŠ¥ æ–°é—»æ ‡é¢˜ï¼šh1  å†…å®¹ï¼šclass="contnt" æ—¥æœŸï¼šclass="fst" æ–°é—»æ¥æºï¼šåŒ—äº¬é’å¹´æŠ¥  æ–°é—»åˆ†ç±»ï¼šid=PageLinkï¼Œå¾…å¤„ç†å­—ç¬¦ä¸²ä¸º""
+		//å›¾ç‰‡é…ç½®src="../../../images/2013-10/30/B02/gly3a1262_b.jpg"ï¼Œimageæ­£åˆ™è¡¨è¾¾ï¼š"IMG src=\"(.*?)iamges(.*?)_b.jpg\"" è·¯å¾„è¡¨è¾¾å¼ï¼š"http:\"?(.*?)(\"|>|\\s+)"è¾…åŠ©å­—ç¬¦ä¸²"http://epaper.ynet.com"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://epaper.ynet.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{4,5}.htm å†…å®¹é“¾æ¥ï¼šhttp://epaper.ynet.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,6}.htm?div=-1
 		//s1 = http://epaper.ynet.com/html/ s2 = - s3 = / s4 = /node_1331.htm
-		TaskThreadPool ynet = new TaskThreadPool("ynet","cg",new String[]{"h1",""},new String[]{"class","contnt"},new String[]{"class","fst"},new String[]{"±±¾©ÇàÄê±¨","±±¾©ÇàÄê±¨ĞÂÎÅÈÈÏß£º65902020; ¹ã¸æÈÈÏß£º400-188-8610;Ğ¡ºìÃ±¡±·¢ĞĞÈÈÏß£º6775-6666;±±ÇàÍøĞÂÎÅÈÈÏß£º65901660"},new String[]{"id","PageLink"},"",
+		TaskThreadPool ynet = new TaskThreadPool("ynet","cg",new String[]{"h1",""},new String[]{"class","contnt"},new String[]{"class","fst"},new String[]{"åŒ—äº¬é’å¹´æŠ¥","åŒ—äº¬é’å¹´æŠ¥æ–°é—»çƒ­çº¿ï¼š65902020; å¹¿å‘Šçƒ­çº¿ï¼š400-188-8610;å°çº¢å¸½â€å‘è¡Œçƒ­çº¿ï¼š6775-6666;åŒ—é’ç½‘æ–°é—»çƒ­çº¿ï¼š65901660"},new String[]{"id","PageLink"},"",
 				"http://epaper.ynet.com/","IMG src=\"(.*?)iamges(.*?)_b.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
 				"http://epaper.ynet.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{4,5}.htm","http://epaper.ynet.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,6}.htm?div=-1","http://epaper.ynet.com/","-","/","/node_1331.htm");        //0,"",new String[]{"",""}
 		
-		cg.execute(ynet); //ÇàÄê±¨¼ÓÈëÏß³Ì³Ø
+		cg.execute(ynet); //é’å¹´æŠ¥åŠ å…¥çº¿ç¨‹æ± 
 		
-		//±±¾©Íí±¨£ºĞÂÎÅ±êÌâ£ºtitle ÄÚÈİ(Õâ¸ö²»¶Ô£¿£¿£¿ÎªÊ²Ã´£¿£¿)£ºid=ozoom ÈÕÆÚ£ºwidth="316" À´Ô´ ±±¾©Íí±¨ ĞÂÎÅ·ÖÀà£ºwidth="145" ´ı´¦Àí×Ö·û£º""
-		//Í¼Æ¬ÅäÖÃ£º(http://bjwb.bjd.com.cn/)!images/2014-11/03/10/wjh4b24_b.jpg imageÕıÔò±í´ïÊ½£º"IMG src=\"(.*?)iamges(.*?)_b.jpg\""Â·¾¶±í´ïÊ½£º"http:\"?(.*?)(\"|>|\\s+)" ¸¨Öú×Ö·û´®"../../../"
-		//Ö÷ÌâÁ´½Ó£ºhttp://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{4,5}.htm ÄÚÈİÁ´½Ó£ºhttp://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm
+		//åŒ—äº¬æ™šæŠ¥ï¼šæ–°é—»æ ‡é¢˜ï¼štitle å†…å®¹(è¿™ä¸ªä¸å¯¹ï¼Ÿï¼Ÿï¼Ÿä¸ºä»€ä¹ˆï¼Ÿï¼Ÿ)ï¼šid=ozoom æ—¥æœŸï¼šwidth="316" æ¥æº åŒ—äº¬æ™šæŠ¥ æ–°é—»åˆ†ç±»ï¼šwidth="145" å¾…å¤„ç†å­—ç¬¦ï¼š""
+		//å›¾ç‰‡é…ç½®ï¼š(http://bjwb.bjd.com.cn/)!images/2014-11/03/10/wjh4b24_b.jpg imageæ­£åˆ™è¡¨è¾¾å¼ï¼š"IMG src=\"(.*?)iamges(.*?)_b.jpg\""è·¯å¾„è¡¨è¾¾å¼ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©å­—ç¬¦ä¸²"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{4,5}.htm å†…å®¹é“¾æ¥ï¼šhttp://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm
 		//s1 = http://bjwb.bjd.com.cn/ s2  = - s3 = / s4 = /node_82.htm
-		TaskThreadPool bjwb = new TaskThreadPool("bjwb","cg",new String[]{"title",""},new String[]{"id","ozoom"},new String[]{"width","316"},new String[]{"±±¾©Íí±¨","¾©±¨¼¯ÍÅËùÊô±¨¿¯£»±¾ÍøÕ¾ËùÓĞÄÚÈİÊô±±¾©ÈÕ±¨±¨Òµ¼¯ÍÅËùÓĞ£¬Î´¾­Ğí¿É²»µÃ×ªÔØ"},new String[]{"width","145"},"",
+		TaskThreadPool bjwb = new TaskThreadPool("bjwb","cg",new String[]{"title",""},new String[]{"id","ozoom"},new String[]{"width","316"},new String[]{"åŒ—äº¬æ™šæŠ¥","äº¬æŠ¥é›†å›¢æ‰€å±æŠ¥åˆŠï¼›æœ¬ç½‘ç«™æ‰€æœ‰å†…å®¹å±åŒ—äº¬æ—¥æŠ¥æŠ¥ä¸šé›†å›¢æ‰€æœ‰ï¼Œæœªç»è®¸å¯ä¸å¾—è½¬è½½"},new String[]{"width","145"},"",
 				"http://bjwb.bjd.com.cn/","IMG src=\"(.*?)iamges(.*?)_b.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
 				"http://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{4,5}.htm","http://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm","http://bjwb.bjd.com.cn/","-","/","/node_82.htm");
 		cg.execute(bjwb);
 		
-		//³É¶¼ÉÌ±¨£ºĞÂÎÅ±êÌâ£ºtitle £¬ÄÚÈİ id = ozoom ,ÈÕÆÚ£ºclass="header-today" À´Ô´£º³É¶¼ÉÌ±¨ ĞÂÎÅ·ÖÀà£º"width","57%";´ı´¦Àí×Ö·û: " - ³É¶¼ÉÌ±¨|³É¶¼ÉÌ±¨µç×Ó°æ|³É¶¼ÉÌ±¨¹Ù·½ÍøÕ¾"
-		//Í¼Æ¬ÅäÖÃ£ºhttp://e.chengdu.cn/html/ ÕıÔò±í´ïÊ½£º"img src=\"(.*?)res(.*?)attpic_brief.jpg\"" Â·¾¶±í´ïÊ½£º"http:\"?(.*?)(\"|>|\\s+)" ¸¨Öú×Ö·û´®£º"../../../"
-		//Ö÷ÌâÁ´½Ó"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm" ÄÚÈİÁ´½Ó£º"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm"
+		//æˆéƒ½å•†æŠ¥ï¼šæ–°é—»æ ‡é¢˜ï¼štitle ï¼Œå†…å®¹ id = ozoom ,æ—¥æœŸï¼šclass="header-today" æ¥æºï¼šæˆéƒ½å•†æŠ¥ æ–°é—»åˆ†ç±»ï¼š"width","57%";å¾…å¤„ç†å­—ç¬¦: " - æˆéƒ½å•†æŠ¥|æˆéƒ½å•†æŠ¥ç”µå­ç‰ˆ|æˆéƒ½å•†æŠ¥å®˜æ–¹ç½‘ç«™"
+		//å›¾ç‰‡é…ç½®ï¼šhttp://e.chengdu.cn/html/ æ­£åˆ™è¡¨è¾¾å¼ï¼š"img src=\"(.*?)res(.*?)attpic_brief.jpg\"" è·¯å¾„è¡¨è¾¾å¼ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©å­—ç¬¦ä¸²ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm" å†…å®¹é“¾æ¥ï¼š"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm"
 		//s1 = http://e.chengdu.cn/html/ s2 - s3 / s4 /node_2.htm
-		TaskThreadPool cdsb = new TaskThreadPool("cdsb","cg",new String[]{"title",""},new String[]{"id","ozoom"},new String[]{"class","header-today"},new String[]{"³É¶¼ÉÌ±¨","³É¶¼ÉÌ±¨ÍøÕ¾: http://e.chengdu.cn | ³É¶¼ÉÌ±¨¿¯ºÅ: CN51-0073³É¶¼ÉÌ±¨ĞÂÎÅÈÈÏß: 86612222  "},new String[]{"width","57%"},"- ³É¶¼ÉÌ±¨|³É¶¼ÉÌ±¨µç×Ó°æ|³É¶¼ÉÌ±¨¹Ù·½ÍøÕ¾",
+		TaskThreadPool cdsb = new TaskThreadPool("cdsb","cg",new String[]{"title",""},new String[]{"id","ozoom"},new String[]{"class","header-today"},new String[]{"æˆéƒ½å•†æŠ¥","æˆéƒ½å•†æŠ¥ç½‘ç«™: http://e.chengdu.cn | æˆéƒ½å•†æŠ¥åˆŠå·: CN51-0073æˆéƒ½å•†æŠ¥æ–°é—»çƒ­çº¿: 86612222  "},new String[]{"width","57%"},"- æˆéƒ½å•†æŠ¥|æˆéƒ½å•†æŠ¥ç”µå­ç‰ˆ|æˆéƒ½å•†æŠ¥å®˜æ–¹ç½‘ç«™",
 				"http://e.chengdu.cn/html/","img src=\"(.*?)res(.*?)attpic_brief.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
 				"http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,2}.htm","http://e.chengdu.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,6}.htm","http://e.chengdu.cn/html/","-","/","/node_2.htm");
 		cg.execute(cdsb);
 		
-		//³É¶¼Íí±¨:ĞÂÎÅ±êÌâclass="bt1" ÄÚÈİ£º"class","M_m_cont",ÈÕÆÚ£º"style","display:none" À´Ô´£º³É¶¼Íí±¨ ĞÂÎÅ·ÖÀà(µ¥Ò»ĞÂÎÅ¿´²»³ö¾ßÌå·ÖÀà)£ºclass="info" £¬´ı´¦Àí×Ö·û£»"" 
-		//Í¼Æ¬ÅäÖÃ£ºhttp://www.cdwb.com.cn/html/ ÕıÔò±í´ïÊ½£º"IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"" Â·¾¶£º"http:\"?(.*?)(\"|>|\\s+)" ¸¨Öú£º"../../../"
-		//Ö÷ÌâÁ´½Ó£ºhttp://www.cdwb.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{2,4}.htm £»ÄÚÈİhttp://www.cdwb.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm
+		//æˆéƒ½æ™šæŠ¥:æ–°é—»æ ‡é¢˜class="bt1" å†…å®¹ï¼š"class","M_m_cont",æ—¥æœŸï¼š"style","display:none" æ¥æºï¼šæˆéƒ½æ™šæŠ¥ æ–°é—»åˆ†ç±»(å•ä¸€æ–°é—»çœ‹ä¸å‡ºå…·ä½“åˆ†ç±»)ï¼šclass="info" ï¼Œå¾…å¤„ç†å­—ç¬¦ï¼›"" 
+		//å›¾ç‰‡é…ç½®ï¼šhttp://www.cdwb.com.cn/html/ æ­£åˆ™è¡¨è¾¾å¼ï¼š"IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"" è·¯å¾„ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://www.cdwb.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{2,4}.htm ï¼›å†…å®¹http://www.cdwb.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm
 		//s1 = http://www.cdwb.com.cn/html/ s2 - s3 / s4 /node_282.htm
-		TaskThreadPool cdwb = new TaskThreadPool("cdwb","cg",new String[]{"class","bt1"},new String[]{"class","M_m_cont"},new String[]{"style","display:none"},new String[]{"³É¶¼Íí±¨","ĞÂÎÅÈÈÏß£º962111  \\n ¹Ù·½Î¢²©£ºhttp://weibo.com/cdwbwb \\n ¶©±¨ÈÈÏß£º028-86741226 ¹ã¸æÈÈÏß£º028-86746906 \\n ±¨ÉçµØÖ·£º³É¶¼ºìĞÇÂ·¶ş¶Î159ºÅ(ÓÊ±à:610017);³É¶¼µç×Ó°æ°æÈ¨ËùÓĞ£º³É¶¼Íí±¨Éç ¹ã¸æ¾­ÓªĞí¿ÉÖ¤ºÅ£º5101034000060"},new String[]{"class","info"},"",
+		TaskThreadPool cdwb = new TaskThreadPool("cdwb","cg",new String[]{"class","bt1"},new String[]{"class","M_m_cont"},new String[]{"style","display:none"},new String[]{"æˆéƒ½æ™šæŠ¥","æ–°é—»çƒ­çº¿ï¼š962111  \\n å®˜æ–¹å¾®åšï¼šhttp://weibo.com/cdwbwb \\n è®¢æŠ¥çƒ­çº¿ï¼š028-86741226 å¹¿å‘Šçƒ­çº¿ï¼š028-86746906 \\n æŠ¥ç¤¾åœ°å€ï¼šæˆéƒ½çº¢æ˜Ÿè·¯äºŒæ®µ159å·(é‚®ç¼–:610017);æˆéƒ½ç”µå­ç‰ˆç‰ˆæƒæ‰€æœ‰ï¼šæˆéƒ½æ™šæŠ¥ç¤¾ å¹¿å‘Šç»è¥è®¸å¯è¯å·ï¼š5101034000060"},new String[]{"class","info"},"",
 				"http://www.cdwb.com.cn/html/","IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
 				"http://www.cdwb.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{2,4}.htm","http://www.cdwb.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm","http://www.cdwb.com.cn/html/","-","/","/node_282.htm");
 		cg.execute(cdwb);
 		
+		//æˆéƒ½æ—¥æŠ¥ï¼šæ–°é—»æ ‡é¢˜:(æœ‰å°é—®é¢˜)     å†…å®¹:  id= ozoom   æ—¥æœŸï¼š æš‚ä¸ç¡®å®š åˆ†ç±»ï¼šwidth=136 æ¥æºï¼šæˆéƒ½æ—¥æŠ¥   
 		
+		//è§£æ”¾å†›æŠ¥ï¼šæ–°é—»æ ‡é¢˜ï¼š"style","line-height:140%;" å†…å®¹ id= ozoom æ—¥æœŸï¼šheight="25" æ¥æºï¼šè§£æ”¾å†›æŠ¥  åˆ†ç±»ï¼šclass=info å¾…å¤„ç†å­—ç¬¦""
+		//å›¾ç‰‡é…ç½®ï¼šhttp://www.chinamil.com.cn/jfjbmap/ æ­£åˆ™è¡¨è¾¾å¼ï¼š"IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"" è·¯å¾„è¡¨è¾¾å¼ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm,å†…å®¹ï¼šhttp://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{1,2}/[0-9]{2}/content_[0-9]{4,6}.htm
+		//s1 = http://www.chinamil.com.cn/jfjbmap/content/ s2 = - s3 =/ s4 = /node_2.htm
+		TaskThreadPool jfjb = new TaskThreadPool("jfjb","cg",new String[]{"style","line-height:140%;"},new String[]{"id","ozoom"},new String[]{"height","25"},new String[]{"è§£æ”¾å†›æŠ¥","å‡¡æœ¬ç½‘æ³¨æ˜â€œæ¥æºï¼šä¸­å›½å†›ç½‘â€æˆ–â€œè§£æ”¾å†›æŠ¥ ** ç”µ/è®¯â€çš„æ–‡å­—ã€å›¾ç‰‡å’ŒéŸ³è§†é¢‘ä½œå“ï¼Œç‰ˆæƒå‡å±ä¸­å›½å†›ç½‘æ‰€æœ‰ï¼Œä»»ä½•åª’ä½“ã€ç½‘ç«™æˆ–ä¸ªäººæœªç»æœ¬ç½‘ä¹¦é¢æˆæƒä¸å¾—è½¬è½½ã€é“¾æ¥ã€è½¬è´´æˆ–ä»¥å…¶ä»–æ–¹å¼ä½¿ç”¨ï¼›å·²ç»æœ¬ç½‘ä¹¦é¢æˆæƒçš„ï¼Œåœ¨ä½¿ç”¨æ—¶å¿…é¡»æ³¨æ˜â€œæ¥æºï¼šä¸­å›½å†›ç½‘â€ã€‚"},new String[]{"class","info"},"",
+				"http://www.chinamil.com.cn/jfjbmap/","IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+				"http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm","http://www.chinamil.com.cn/jfjbmap/content/[0-9]{4}-[0-9]{1,2}/[0-9]{2}/content_[0-9]{4,6}.htm","http://www.chinamil.com.cn/jfjbmap/content/","-","/","/node_2.htm");
+		cg.execute(jfjb);
+		
+		//æ–°æ°‘æ™šæŠ¥  æ ‡é¢˜ï¼štitle å†…å®¹ï¼šid =ozoom  æ—¥æœŸï¼šspan æ¥æºï¼šæ–°æ°‘æ™šæŠ¥ åˆ†ç±»:"class","leftrq" å¾…å¤„ç†ï¼š"æ–°æ°‘æ™šæŠ¥æ•°å­—æŠ¥-"
+		//å›¾ç‰‡é…ç½®ï¼šhttp://xmwb.xinmin.cn/ æ­£åˆ™è¡¨è¾¾å¼ï¼š"img src=\"(.*?)resfile(.*?)_b.jpg\"" è·¯å¾„è¡¨è¾¾å¼ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://xmwb.xinmin.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm å†…å®¹ï¼šhttp://xmwb.xinmin.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,2}_[0-9]{2}.htm
+		//s1= http://xmwb.xinmin.cn/html/ s2 - s3 -/ s4 /node_1.htm
+		TaskThreadPool xmwb = new TaskThreadPool("xmwb","cg",new String[]{"title",""},new String[]{"id","ozoom"},new String[]{"span",""},new String[]{"æ–°æ°‘æ™šæŠ¥","ä»¥ã€Šæ–°æ°‘æ™šæŠ¥ã€‹å¼ºå¤§çš„èµ„æºä¸ºä¾æ‰˜ï¼Œèæ–°é—»èµ„è®¯ã€æ—¶å°šå¨±ä¹ã€è§†é¢‘ç›´æ’­ã€åäººè®¿è°ˆã€æ•°å­—æŠ¥çº¸ã€äº¤äº’ç¤¾åŒºã€ç”µå­å•†åŠ¡ä¸ºä¸€ä½“ï¼Œå…·æœ‰å›¾æ–‡ã€è§†å¬ã€äº’åŠ¨ç‰¹è‰²çš„ç‹¬å®¶èµ„è®¯ï¼Œè‡´åŠ›äºåšåˆ°â€œä¸Šæµ·èµ„è®¯ï¼Œå¿«é€Ÿå…¨é¢â€çš„æœåŠ¡å®—æ—¨ã€‚"},new String[]{"class","leftrq"},"æ–°æ°‘æ™šæŠ¥æ•°å­—æŠ¥-",
+				"http://xmwb.xinmin.cn/","img src=\"(.*?)resfile(.*?)_b.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+				"http://xmwb.xinmin.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm","http://xmwb.xinmin.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{1,2}_[0-9]{2}.htm","http://xmwb.xinmin.cn/html/","-","/","/node_1.htm");
+		cg.execute(xmwb);
+		
+		//æ–°é—»æ™¨æŠ¥(ç‰¹æ®Šç¼–ç "gb2312") æ ‡é¢˜ï¼štitle å†…å®¹ï¼šclass = content æ—¥æœŸï¼šh5 æ¥æºï¼šæ–°é—»æ™¨æŠ¥ åˆ†ç±»ï¼šh5 å¾…å¤„ç†  :""
+		//å›¾ç‰‡é…ç½®ï¼šhttp://newspaper.jfdaily.com/xwcb/resfiles/2014-11/06/l_33941_A0520141106S_3.jpg æ­£åˆ™è¡¨è¾¾å¼ï¼š"img src=\"(.*?)xwcb\resfiles(.*?).jpg\"" è·¯å¾„ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm å†…å®¹é“¾æ¥ï¼šhttp://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{4,6}.htm
+		//s1 =http://newspaper.jfdaily.com/xwcb/html/ s2 - s3 / s4 /node_2.htm
+		TaskThreadPool xwcb = new TaskThreadPool("xwcb","cg",new String[]{"title",""},new String[]{"class","content"},new String[]{"h5",""},new String[]{"æ–°é—»æ™¨æŠ¥","ä¸»åŠå•ä½ï¼šè§£æ”¾æ—¥æŠ¥æŠ¥ä¸šé›†å›¢ï¼Œå›½å†…ç»Ÿä¸€åˆŠå·ï¼šCN31-0070"},new String[]{"h5",""},"",
+				"http://newspaper.jfdaily.com/","img src=\"(.*?)xwcb\resfiles(.*?).jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+				"http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm","http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{4,6}.htm","http://newspaper.jfdaily.com/xwcb/html/","-","/","/node_2.htm");
+		cg.execute(xwcb);
+		
+		//å¹¿å·æ—¥æŠ¥ æ ‡é¢˜ï¼šh3 å†…å®¹ï¼š"class","article" æ—¥æœŸï¼š"class","infor" æ¥æºï¼šå¹¿å·æ—¥æŠ¥ åˆ†ç±»ï¼š"class","title" å¾…å¤„ç†ï¼š""
+		//å›¾ç‰‡é…ç½®ï¼šhttp://gzdaily.dayoo.com/ æ­£åˆ™è¡¨è¾¾å¼ï¼š"IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"" è·¯å¾„ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://gzdaily.dayoo.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm å†…å®¹é“¾æ¥ï¼šhttp://gzdaily.dayoo.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm
+		//s1 = http://gzdaily.dayoo.com/html/ s2 - s3 / s4 /node_1.htm
+		TaskThreadPool gzrb = new TaskThreadPool("gzrb","cg",new String[]{"h3",""},new String[]{"class","article"},new String[]{"class","infor"},new String[]{"å¹¿å·æ—¥æŠ¥","å¹¿å·æ—¥æŠ¥æŠ¥ä¸šé›†å›¢,æŠ¥æ–™çƒ­çº¿:(020)81919191,ç‰ˆæƒæ‰€æœ‰ ä¸å¾—è½¬è½½1999-2011Â©å¹¿å·å¸‚äº¤äº’å¼ä¿¡æ¯ç½‘ç»œæœ‰é™å…¬å¸ï¼ˆå¤§æ´‹ç½‘ï¼‰,ç»è¥è®¸å¯è¯ç¼–å·:ç²¤B2-20040381ä¿¡æ¯ç½‘ç»œä¼ æ’­è§†å¬èŠ‚ç›®è®¸å¯è¯ï¼š1906152"},new String[]{"class","title"},"",
+				"http://gzdaily.dayoo.com/","IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+				"http://gzdaily.dayoo.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm","http://gzdaily.dayoo.com/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm","http://gzdaily.dayoo.com/html/","-","/","/node_1.htm");
+		cg.execute(gzrb);
+		
+		//ç¾ŠåŸæ™šæŠ¥ æ ‡é¢˜ï¼štitle å†…å®¹ï¼šid=ozoom æ—¥æœŸï¼šclass time æ¥æº ç¾ŠåŸæ™šæŠ¥ åˆ†ç±»ï¼šdiv  å¾…å¤„ç†ï¼š"_é‡‘ç¾Šç½‘"
+		//å›¾ç‰‡é…ç½®ï¼šhttp://www.ycwb.com/ePaper/ycwb/ æ­£åˆ™è¡¨è¾¾å¼ï¼š"IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"" è·¯å¾„ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://www.ycwb.com/ePaper/ycwb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{3,4}.htm å†…å®¹http://www.ycwb.com/ePaper/ycwb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm?div=-1
+		//s1 =http://www.ycwb.com/ePaper/ycwb/html/ s2 - s3 / s4 /node_2081.htm
+		TaskThreadPool ycwb = new TaskThreadPool("ycwb","cg",new String[]{"title",""},new String[]{"id","ozoom"},new String[]{"class","time"},new String[]{"ç¾ŠåŸæ™šæŠ¥","ç²¤B2-20040141 æ–°å‡ºç½‘è¯(ç²¤)å­—022å· ä¿¡æ¯ç½‘ç»œä¼ æ’­è§†å¬èŠ‚ç›®è®¸å¯è¯:1910522 ç‰ˆæƒæ‰€æœ‰ [ç¾ŠåŸæ™šæŠ¥æŠ¥ä¸šé›†å›¢] å¹¿ä¸œç¾ŠåŸæ™šæŠ¥æ•°å­—åª’ä½“æœ‰é™å…¬å¸"},new String[]{"div",""},"_é‡‘ç¾Šç½‘",
+				"http://www.ycwb.com/ePaper/ycwb/","IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+				"http://www.ycwb.com/ePaper/ycwb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{3,4}.htm","http://www.ycwb.com/ePaper/ycwb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm?div=-1","http://www.ycwb.com/ePaper/ycwb/html/","-","/","/node_2081.htm");
+		cg.execute(ycwb);
 	
-	
+		//å—æ–¹éƒ½å¸‚æŠ¥ æ ‡é¢˜ï¼štitle å†…å®¹"class","content BSHARE_POP" æ—¥æœŸï¼šid="pubtime_baidu" æ¥æºï¼šå—æ–¹éƒ½å¸‚æŠ¥  åˆ†ç±»ï¼š"class","info" å¾…å¤„ç†ï¼š"_å—æ–¹éƒ½å¸‚æŠ¥æ•°å­—æŠ¥TT"
+		//å›¾ç‰‡é“¾æ¥ï¼šhttp://epaper.nandu.com/epaper/A/res/2014-11/06/AA19/res03_attpic_brief.jpg æ­£åˆ™è¡¨è¾¾å¼ï¼š"IMG src=\"(.*?)res(.*?)attpic_brief.jpg\""è·¯å¾„ï¼š"http:\"?(.*?)(\"|>|\\s+)" è¾…åŠ©ï¼š"../../../"
+		//ä¸»é¢˜é“¾æ¥ï¼šhttp://epaper.nandu.com/epaper/A/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{3,5}.htm å†…å®¹http://epaper.nandu.com/epaper/A/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm?div=-1
+		//s1 http://epaper.nandu.com/epaper/A/html/ s2 - s3 / s4 /node_2731.htm
+		
+		TaskThreadPool nandu = new TaskThreadPool("nandu","cg",new String[]{"title",""},new String[]{"class","content BSHARE_POP"},new String[]{"id","pubtime_baidu"},new String[]{"å—æ–¹éƒ½å¸‚æŠ¥","ICPè¯ç²¤B2-20040112 | å¹¿æ’­ç”µè§†èŠ‚ç›®åˆ¶ä½œç»è¥è®¸å¯è¯ | äº’è”ç½‘æ–°é—»è®¸å¯è¯ | ä¿¡æ¯ç½‘ç»œä¼ æ’­è§†å¬èŠ‚ç›®è®¸å¯è¯ | ç½‘ç»œæ–‡åŒ–ç»è¥è®¸å¯è¯ æ·±åœ³æ€»æœºï¼š0755-88351896 88351986  æ·±åœ³å¹¿å‘Šçƒ­çº¿ï¼š0755-36860181  å¹¿å·å¹¿å‘Šçƒ­çº¿ï¼š020-87366649"},new String[]{"class","info"},"_å—æ–¹éƒ½å¸‚æŠ¥æ•°å­—æŠ¥TT",
+				"http://epaper.nandu.com/epaper/A/","IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+				"http://epaper.nandu.com/epaper/A/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{3,5}.htm","http://epaper.nandu.com/epaper/A/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm?div=-1","http://epaper.nandu.com/epaper/A/html/","-","/","/node_2731.htm");
+		cg.execute(nandu);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 	}
 	private synchronized int getQueueSize(Queue queue){
@@ -100,34 +167,34 @@ public class ThreadPoolHandleNews{
 class TaskThreadPool implements Runnable{
 
 	/**
-	 * ºÜ¶àĞèÒª³õÊ¼»¯µÄ¶«Î÷£¬
-	 * ºÃºÃÏëÏë
-	 * 1.Êı¾İ¿â Ãû³Æ ±íÃû
-	 * 2.ĞÂÎÅ£ºĞÂÎÅ±êÌâ±êÇ©Title[] ÄÚÈİ±êÇ©Content[] ÈÕÆÚ±êÇ©date[]  ĞÂÎÅÀ´Ô´ newSource[] ĞÂÎÅ·ÖÀà categroy[] ĞÂÎÅ´ı´¦Àí×Ö·û´® bufString
-	 * 3.Í¼Æ¬£ºÍ¼Æ¬ÅäÖÃurl £¬imageÕıÔò±í´ïÊ½£ºIMURL_REG Â·¾¶±í´ïÊ½£ºIMSRC_REG Á´½Ó¸¨Öú×Ö·û´® £ºimageBuf
-	 * 4.ĞÂÎÅÖ÷ÌâÁ´½Ó£ºThemeLink ,ÄÚÈİÁ´½Ó£ºcontentLink ÒÔ¼°ÅäÖÃ×Ö·û´®
+	 * å¾ˆå¤šéœ€è¦åˆå§‹åŒ–çš„ä¸œè¥¿ï¼Œ
+	 * å¥½å¥½æƒ³æƒ³
+	 * 1.æ•°æ®åº“ åç§° è¡¨å
+	 * 2.æ–°é—»ï¼šæ–°é—»æ ‡é¢˜æ ‡ç­¾Title[] å†…å®¹æ ‡ç­¾Content[] æ—¥æœŸæ ‡ç­¾date[]  æ–°é—»æ¥æº newSource[] æ–°é—»åˆ†ç±» categroy[] æ–°é—»å¾…å¤„ç†å­—ç¬¦ä¸² bufString
+	 * 3.å›¾ç‰‡ï¼šå›¾ç‰‡é…ç½®url ï¼Œimageæ­£åˆ™è¡¨è¾¾å¼ï¼šIMURL_REG è·¯å¾„è¡¨è¾¾å¼ï¼šIMSRC_REG é“¾æ¥è¾…åŠ©å­—ç¬¦ä¸² ï¼šimageBuf
+	 * 4.æ–°é—»ä¸»é¢˜é“¾æ¥ï¼šThemeLink ,å†…å®¹é“¾æ¥ï¼šcontentLink ä»¥åŠé…ç½®å­—ç¬¦ä¸²
 	 * 
 	 * */
-//	public int flag ;           //µÚ¼¸¸öÏß³Ì
+//	public int flag ;           //ç¬¬å‡ ä¸ªçº¿ç¨‹
 	
-	public String DBName ;      //Êı¾İ¿âÃû³Æ
-	public String DBTable ;     //Êı¾İ¿â±íÃû
+	public String DBName ;      //æ•°æ®åº“åç§°
+	public String DBTable ;     //æ•°æ®åº“è¡¨å
 	
-	public String title[];      // ĞÂÎÅ±êÌâ
-	public String content[];    //ĞÂÎÅÄÚÈİ
-	public String date[] ;      //ĞÂÎÅÈÕÆÚ
-	public String newSource[] ; //ĞÂÎÅÀ´Ô´    //¿É¹Ì¶¨
-	public String categroy[] ;  //ĞÂÎÅ·ÖÀà
-	public String bufString ;   //ĞÂÎÅ´ı´¦Àí×Ö·û´®
+	public String title[];      // æ–°é—»æ ‡é¢˜
+	public String content[];    //æ–°é—»å†…å®¹
+	public String date[] ;      //æ–°é—»æ—¥æœŸ
+	public String newSource[] ; //æ–°é—»æ¥æº    //å¯å›ºå®š
+	public String categroy[] ;  //æ–°é—»åˆ†ç±»
+	public String bufString ;   //æ–°é—»å¾…å¤„ç†å­—ç¬¦ä¸²
 	
-	public String imageUrl ;        //Í¼Æ¬ÅäÖÃurl
-	public String imurl_reg ;      //imageÕıÔò±í´ïÊ½
-	public String imscr_reg ;      //Í¼Æ¬Â·¾¶
-	public String imageBuf ;       //Í¼Æ¬Á´½Ó¸¨Öú×Ö·û´®
+	public String imageUrl ;        //å›¾ç‰‡é…ç½®url
+	public String imurl_reg ;      //imageæ­£åˆ™è¡¨è¾¾å¼
+	public String imscr_reg ;      //å›¾ç‰‡è·¯å¾„
+	public String imageBuf ;       //å›¾ç‰‡é“¾æ¥è¾…åŠ©å­—ç¬¦ä¸²
 	
-	public String themeLink ;       //Ö÷ÌâÁ´½ÓÕıÔò±í´ïÊ½
-	public String contentLink;     //ÄÚÈİÁ´½ÓÕıÔò±í´ïÊ½
-	public String newurl1 ;        //Á´½ÓÌî³äÄÚÈİ 1,2,3,4
+	public String themeLink ;       //ä¸»é¢˜é“¾æ¥æ­£åˆ™è¡¨è¾¾å¼
+	public String contentLink;     //å†…å®¹é“¾æ¥æ­£åˆ™è¡¨è¾¾å¼
+	public String newurl1 ;        //é“¾æ¥å¡«å……å†…å®¹ 1,2,3,4
 	public String newurl2 ;
 	public String newurl3 ;
 	public String newurl4 ;
@@ -137,7 +204,7 @@ class TaskThreadPool implements Runnable{
 		
 	}
 	
-	//¸Ğ¾õÕâ¸ö¹¹Ôìº¯ÊıºÃÀÛ°¡
+	//æ„Ÿè§‰è¿™ä¸ªæ„é€ å‡½æ•°å¥½ç´¯å•Š
 	
 	public TaskThreadPool(String DBName ,String DBTable ,
 			String title[],String content[],String date[],String newSource[] ,String categroy[] ,String bufString,
