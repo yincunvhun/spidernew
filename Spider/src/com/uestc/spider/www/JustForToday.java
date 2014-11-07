@@ -21,7 +21,7 @@ public class JustForToday extends Thread {
 	}
 	public void cdsbToday(String newthemelink ,String newcontentlink,String newurl1,String newurl2 ,String newurl3 ,String newurl4 ,
 			String[] bqtitle,String[] bqcontent,String[] bqdate,String[] bqnewsource ,
-			String[] bqcategroy ,String bqbuf,String newsource ,String newtable){
+			String[] bqcategroy ,String bqbuf,String encode ,String newsource ,String newtable){
 		
 		StringBuffer s1 = new StringBuffer();
 		s1 = s1.append(newurl1).append(year).append(newurl2). 
@@ -51,7 +51,7 @@ public class JustForToday extends Thread {
 				flag = false ;
 				try {
 					new GetLink(newthemelink,newcontentlink,newurl1,newurl2,newurl3,newurl4).
-					allWeWillDo(s1.toString(),bqtitle,bqcontent,bqdate,bqnewsource ,bqcategroy ,bqbuf,newsource , newtable);
+					allWeWillDo(s1.toString(),bqtitle,bqcontent,bqdate,bqnewsource ,bqcategroy ,bqbuf,encode ,newsource , newtable);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 //					e.printStackTrace();

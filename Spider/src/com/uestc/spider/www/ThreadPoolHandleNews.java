@@ -49,7 +49,7 @@ public class ThreadPoolHandleNews{
 		
 		cg.execute(ynet); //青年报加入线程池
 		
-		//北京晚报：新闻标题：title 内容(这个不对？？？为什么？？)：id=ozoom 日期：width="316" 来源 北京晚报 新闻分类：width="145" 待处理字符：""
+		//北京晚报：新闻标题：title 内容(已经搞定)：id=ozoom 日期：width="316" 来源 北京晚报 新闻分类：width="145" 待处理字符：""
 		//图片配置：(http://bjwb.bjd.com.cn/)!images/2014-11/03/10/wjh4b24_b.jpg image正则表达式："IMG src=\"(.*?)iamges(.*?)_b.jpg\""路径表达式："http:\"?(.*?)(\"|>|\\s+)" 辅助字符串"../../../"
 		//主题链接：http://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{4,5}.htm 内容链接：http://bjwb.bjd.com.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm
 		//s1 = http://bjwb.bjd.com.cn/ s2  = - s3 = / s4 = /node_82.htm
@@ -133,9 +133,16 @@ public class ThreadPoolHandleNews{
 				"http://epaper.nandu.com/epaper/A/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{3,5}.htm","http://epaper.nandu.com/epaper/A/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{6,8}.htm?div=-1","http://epaper.nandu.com/epaper/A/html/","-","/","/node_2731.htm");
 		cg.execute(nandu);
 		
+		//京华时报 :标题：h1 内容："" "" 日期：class time 来源：京华时报 分类（具体分类暂时无法搞定）："class","nav_c" 待处理：""
+		//图片链接：http://epaper.jinghua.cn/ !!images/2014-11/07/017/p1_b.jpg 正则表达式："img src=\"(.*?)images(.*?)_b.jpg\"" 路径："http:\"?(.*?)(\"|>|\\s+)" 辅助："../../../"
+		//主题链接：http://epaper.jinghua.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{2,4}.htm 内容链接：http://epaper.jinghua.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm
+		//s1 = http://epaper.jinghua.cn/html/ s2 - s3 / s4 /node_100.htm
+		TaskThreadPool jinghua = new TaskThreadPool("jinghua","cg",new String[]{"h1",""},new String[]{"",""},new String[]{"class","time"},new String[]{"京华时报","电信与信息服务业务经营许可证070686号 | 电信业务审批[2007]字第433号 | 视听节目许可证0108269号 | 广播电视节目制作经营许可证京字693号 | 国新办网备字[2006]1号,短信息类服务接入代码使用证书 京号【2009】12001-B011 | 京公网安备110105000301号"},new String[]{"class","nav_c"},"",
+				"http://epaper.jinghua.cn/","img src=\"(.*?)images(.*?)_b.jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+				"http://epaper.jinghua.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{2,4}.htm","http://epaper.jinghua.cn/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{5,7}.htm","http://epaper.jinghua.cn/html/","-","/","/node_100.htm");
+		cg.execute(jinghua);
 		
-		
-		
+		//现代快报 主题：id=mp369460 内容：
 		
 		
 		

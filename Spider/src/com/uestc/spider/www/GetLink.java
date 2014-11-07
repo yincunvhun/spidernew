@@ -143,7 +143,7 @@ public class GetLink {
 	
 	
 	public void allWeWillDo(String themeUrl,String[] bqtitle,String[] bqcontent,
-    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable) throws Exception{
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String encode ,String newsource ,String newtable) throws Exception{
 		
 		int i = 0;
 		linkTheme.offer(themeUrl);
@@ -154,8 +154,8 @@ public class GetLink {
 					StringBuffer s = new StringBuffer(linkContent.poll());
 					i++;
 //					System.out.println(s);
-					CDSB cdsb = new CDSB(s.toString() , bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf);
-					cdsb.memory(s.toString(), bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,newsource,newtable);
+					CDSB cdsb = new CDSB(s.toString() , bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,encode);
+					cdsb.memory(s.toString(), bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,encode,newsource,newtable);
 					s = null;
 					cdsb = null;
 				}
@@ -169,7 +169,7 @@ public class GetLink {
 	
 	//获取一年的新闻
 	public void result(int year,int month ,int day,String[] bqtitle,String[] bqcontent,
-    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable) throws Exception{
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String encode,String newsource ,String newtable) throws Exception{
 		Calendar now = Calendar.getInstance();
 		int year1 = now.get(Calendar.YEAR);
 		if(year > year1)
@@ -198,7 +198,7 @@ public class GetLink {
 				
 //			System.out.println(url);
 				allWeWillDo(url.toString(),bqtitle,bqcontent,
-			    		bqdate,bqnewsource ,bqcategroy ,bqbuf,newsource , newtable);   
+			    		bqdate,bqnewsource ,bqcategroy ,bqbuf,encode,newsource , newtable);   
 			//清空已经访问的link列表，即每天的新闻爬取存储后要对所有访问过的链接进行清理，节约内存
 				linkVisit.clear();
 				
@@ -210,7 +210,7 @@ public class GetLink {
 	}
 	
 	public void hxdsb(String[] bqtitle,String[] bqcontent,
-    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String newsource ,String newtable){
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String encode ,String newsource ,String newtable){
 		
 		StringBuffer s1 = new StringBuffer("http://www.wccdaily.com.cn/shtml/hxdsb/20141024/va");
 		StringBuffer s2 = new StringBuffer(".shtml");
@@ -227,8 +227,8 @@ public class GetLink {
 				StringBuffer s = new StringBuffer(linkContent.poll());
 //				i++;
 				System.out.println(s);
-				CDSB cdsb = new CDSB(s.toString(),bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf);
-				cdsb.memory(s.toString(),bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,newsource,newtable);
+				CDSB cdsb = new CDSB(s.toString(),bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,encode);
+				cdsb.memory(s.toString(),bqtitle ,bqcontent ,bqdate ,bqnewsource ,bqcategroy ,bqbuf,encode ,newsource,newtable);
 				s = null;
 				cdsb = null;
 			}

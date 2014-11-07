@@ -62,12 +62,12 @@ public class CDSB implements Runnable {
     private String[] bqCategroy ;     //= {"width","57%"};  //新闻分类width="57%" "class","s_left"
     private String bqBuf     ;        // = "- 成都商报|成都商报电子版|成都商报官方网站" ;// "华西都市报" ;              //过滤内容，如- 成都商报|成都商报电子版|成都商报官方网站 以及
     
-    private String ENCODE = "utf-8"; //gb2312 utf-8
+    private String ENCODE   ; // = "gb2312"; //gb2312 utf-8
     
     public int state = 0;
   
     public CDSB(String url, String[] bqtitle,String[] bqcontent,
-    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf) {
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String encode) {
   
         try {
         	this.url = url;
@@ -77,6 +77,7 @@ public class CDSB implements Runnable {
         	this.bqNewSource = bqnewsource;
         	this.bqCategroy = bqcategroy;
         	this.bqBuf = bqbuf;
+        	this.ENCODE = encode;
 //        	this.baseUrl = ;
         
         } catch (Exception e) {
@@ -261,7 +262,19 @@ public class CDSB implements Runnable {
 		   content = handle(html,bqContent[0],bqContent[1]);
 	   if(url.contains("gzdaily.dayoo.com/html")){
 		   content = content.substring(content.indexOf("来源: 广州日报")+8,content.length());
-	   }
+	   }else if(url.contains("bjwb.bjd.com.cn/html")){ //北京晚报
+		   content = html.substring(html.indexOf("<!--enpcontent-->")+17, html.indexOf("<!--/enpcontent-->"));
+		   content = content.replaceAll("<P>|<p>|</p>|</P>", "");
+		   content = content.replaceAll("&nbsp;","\n");
+	   }else if(url.contains("http://epaper.jinghua.cn/html")){ //京华时报
+		   content = html.substring(html.indexOf("<!--enpcontent-->")+17, html.indexOf("<!--/enpcontent-->"));
+		   content = content.replaceAll("<P>|<p>|</p>|</P>", "");
+		   content = content.replaceAll("&nbsp;","\n");
+	   }else if(url.contains("kb.dsqq.cn/html")){  //现代快报
+		   content = html.substring(html.indexOf("<founder-content>")+17,html.indexOf("</founder-content>"));
+		   content = content.replaceAll("<P>|<p>|</p>|</P>", "");
+		   content = content.replaceAll("&nbsp;","\n");
+	   };
 //	   content = content.replaceAll("\\n", "");
 	   System.out.println(content);
 	   return content;
@@ -365,6 +378,10 @@ public class CDSB implements Runnable {
 	   }else if(url.contains("http://epaper.nandu.com/")){
 		   
 		   categroy = categroy.substring(categroy.indexOf("版名：")+3, categroy.indexOf("字号："));
+	   }else if(url.contains("epaper.jinghua.cn/html")){
+		   categroy = categroy.replaceAll("&gt;", "");
+		   categroy = categroy.substring(18,categroy.length());
+		  
 	   };
 	   
 	   if(categroy.contains("："))
@@ -384,9 +401,12 @@ public class CDSB implements Runnable {
 	   else
 		   originalCategroy = handle(html ,bqCategroy[0],bqCategroy[1]);
 	   
-	   if(url.contains("www.ycwb.com/ePaper/ycwb/html")){
+	   if(url.contains("www.ycwb.com/ePaper/ycwb/html")){  //羊城晚报
 		   originalCategroy = originalCategroy.replaceAll("\\s*", "");
 		   originalCategroy = originalCategroy.substring(6, originalCategroy.indexOf("按日期检索"));
+		   
+	   }else  if(url.contains("epaper.jinghua.cn/html")){   //京华时报
+		   categroy = categroy.replaceAll("&gt;", "");
 		   
 	   };
 //	   if(originalCategroy.length() >= 19){
@@ -405,10 +425,10 @@ public class CDSB implements Runnable {
     * newsource 为创建的数据库名称 ；newtable 为创建的数据库表名
     * */
    public static void memory(String url,String[] bqtitle,String[] bqcontent,
-   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String newsource ,String newtable){
+   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String newsource ,String newtable,String encode){
 	   
 	   CRUT crut = new CRUT(newsource ,newtable);
-	   CDSB cdsb = new CDSB(url,bqtitle,bqcontent,bqdate,bqnewsource,bqcategroy,bqbuf);
+	   CDSB cdsb = new CDSB(url,bqtitle,bqcontent,bqdate,bqnewsource,bqcategroy,bqbuf,encode);
 //	   if(cdsb.text != null){
 //		System.out.println(cdsb.text);   
 	   System.out.println(url);
@@ -436,7 +456,7 @@ public class CDSB implements Runnable {
     	
     	String url3 = "http://epaper.ynet.com/html/2014-11/05/content_94803.htm?div=-1";
     	String url4 = "http://bjwb.bjd.com.cn/html/2014-11/03/content_229916.htm";
-    	String url5 = "http://bjwb.bjd.com.cn/html/2014-11/03/content_229911.htm";
+    	String url5 = "http://bjwb.bjd.com.cn/html/2014-11/06/content_231000.htm";
     	String url6 = "http://www.cdwb.com.cn/html/2014-11/04/content_2140919.htm";
     	String url7 = "http://www.cdrb.com.cn/html/2014-11/06/content_2141933.htm";
     	String url8 = "http://www.chinamil.com.cn/jfjbmap/content/2014-11/06/content_92122.htm";
@@ -447,11 +467,15 @@ public class CDSB implements Runnable {
     	String url13 = "http://www.ycwb.com/ePaper/ycwb/html/2014-11/06/content_574483.htm?div=-1";
     	String url14 = "http://www.ycwb.com/ePaper/ycwb/html/2014-09/29/content_550830.htm?div=-1";
     	String url15 = "http://epaper.nandu.com/epaper/A/html/2014-11/06/content_3339541.htm?div=-1";
+    	String url16 = "http://epaper.jinghua.cn/html/2014-11/07/content_142969.htm";
+    	String url17 = "http://kb.dsqq.cn/html/2014-11/07/content_369572.htm";
+    	
     	String[] s1 = {"",""};
-    	String[] s2 = {"class","info"};
-    	CDSB T = new CDSB(url15,s1,s1,s1,s1,s2,"_南方都市报数字报TT");
+    	String[] s2 = {"id","ozoom"};
+    	String s3 = "utf-8";  //= "gb2312"; //gb2312 utf-8
+    	CDSB T = new CDSB(url17,s1,s2,s1,s1,s1,"",s3);
 //    	System.out.println(T.text);
-    	T.handleCategroy(T.text);
+    	T.handleContent(T.text);
 //    	System.out.println(T.text);
 //    	T.handleOriginalTitle(T.text);
 //    	memory(url1);
