@@ -62,12 +62,19 @@ public class CDSB implements Runnable {
     private String[] bqCategroy ;     //= {"width","57%"};  //新闻分类width="57%" "class","s_left"
     private String bqBuf     ;        // = "- 成都商报|成都商报电子版|成都商报官方网站" ;// "华西都市报" ;              //过滤内容，如- 成都商报|成都商报电子版|成都商报官方网站 以及
     
+    //图片配置
+    private String photoUrl ; // 替换相对路径
+    private String imageUrl ; //= "IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"";     //"img src=\"(.*?)res(.*?)attpic_brief.jpg\""
+	private String imageScr ; //= "http:\"?(.*?)(\"|>|\\s+)";     //"http:\"?(.*?)(\"|>|\\s+)"
+	private String imageBuf ; //= "../../../"; 
+    
     private String ENCODE   ; // = "gb2312"; //gb2312 utf-8
     
     public int state = 0;
   
     public CDSB(String url, String[] bqtitle,String[] bqcontent,
-    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String encode) {
+    		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf,String encode,
+    		String photourl,String imageurl,String imagescr,String imagebuf) {
   
         try {
         	this.url = url;
@@ -79,6 +86,10 @@ public class CDSB implements Runnable {
         	this.bqBuf = bqbuf;
         	this.ENCODE = encode;
 //        	this.baseUrl = ;
+        	this.photoUrl = photourl;
+        	this.imageUrl = imageurl;
+        	this.imageScr = imagescr ;
+        	this.imageBuf = imagebuf;
         
         } catch (Exception e) {
         	
@@ -148,17 +159,17 @@ public class CDSB implements Runnable {
             text = sb.toString();
         } catch (IOException e) {
 //            e.printStackTrace();
-        } finally {
-            try {
-                bufferedReader.close();
-                inputStream.close();
-                httpUrlConnection.disconnect();
-            } catch (IOException e) {
+        } //finally {
+//            try {
+//                bufferedReader.close();
+//                inputStream.close();
+//                httpUrlConnection.disconnect();
+//            } catch (IOException e) {
 //                e.printStackTrace();
-            	System.out.println("链接关闭出现问题...");
-            }
+//            	System.out.println("链接关闭出现问题...");
+//            }
   
-        }
+//        }
   
     }
 
@@ -284,15 +295,18 @@ public class CDSB implements Runnable {
   * 命名处理待改进
   * */
    public String handleImage(String html){
-	   String url = "";
-	   String imageurl = "";     //"img src=\"(.*?)res(.*?)attpic_brief.jpg\""
-	   String imagescr = "";     //"http:\"?(.*?)(\"|>|\\s+)"
-	   String imageBuf = "";
+	 //图片配置：http://www.chinamil.com.cn/jfjbmap/ 
+	   //正则表达式："IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"" 路径表达式："http:\"?(.*?)(\"|>|\\s+)" 辅助："../../../"
+//	   String url = "http://www.chinamil.com.cn/jfjbmap/";
+//	   String imageurl = "IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"";     //"img src=\"(.*?)res(.*?)attpic_brief.jpg\""
+//	   String imagescr = "http:\"?(.*?)(\"|>|\\s+)";     //"http:\"?(.*?)(\"|>|\\s+)"
+//	   String imageBuf = "../../../";
 	   StringBuffer buf = new StringBuffer("");
-	   StringBuffer load = new StringBuffer("C:\\Users\\Administrator\\git\\spider\\Spider\\image\\");
+	   StringBuffer load = new StringBuffer("C:\\Users\\Administrator\\git\\Spider\\Spider\\image\\");
 	   StringBuffer symbol = new StringBuffer(";");
-	   GetImage image = new GetImage(url,imageurl,imagescr,imageBuf);    //图片命名正则表达式
-	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+" "+ nameSource;
+	   GetImage image = new GetImage(photoUrl,imageUrl,imageScr,imageBuf);    //图片命名正则表达式
+	   image.fileName = handleTime(html).replaceAll("[^0-9]", "")+ nameSource;
+	   System.out.println(image.fileName);
 	   Vector<String> dateSourceNumNum = image.getImage(html); 
 	   for(String s: dateSourceNumNum){
 		   buf = buf.append(load).append(new StringBuffer(s)).append(symbol);
@@ -425,10 +439,11 @@ public class CDSB implements Runnable {
     * newsource 为创建的数据库名称 ；newtable 为创建的数据库表名
     * */
    public static void memory(String url,String[] bqtitle,String[] bqcontent,
-   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String newsource ,String newtable,String encode){
+   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String DBName ,String DBTable,String encode,
+   		String photourl,String imageurl,String imagescr,String imagebuf){
 	   
-	   CRUT crut = new CRUT(newsource ,newtable);
-	   CDSB cdsb = new CDSB(url,bqtitle,bqcontent,bqdate,bqnewsource,bqcategroy,bqbuf,encode);
+	   CRUT crut = new CRUT(DBName ,DBTable);
+	   CDSB cdsb = new CDSB(url,bqtitle,bqcontent,bqdate,bqnewsource,bqcategroy,bqbuf,encode, photourl, imageurl, imagescr, imagebuf);
 //	   if(cdsb.text != null){
 //		System.out.println(cdsb.text);   
 	   System.out.println(url);
@@ -459,7 +474,7 @@ public class CDSB implements Runnable {
     	String url5 = "http://bjwb.bjd.com.cn/html/2014-11/06/content_231000.htm";
     	String url6 = "http://www.cdwb.com.cn/html/2014-11/04/content_2140919.htm";
     	String url7 = "http://www.cdrb.com.cn/html/2014-11/06/content_2141933.htm";
-    	String url8 = "http://www.chinamil.com.cn/jfjbmap/content/2014-11/06/content_92122.htm";
+    	String url8 = "http://www.chinamil.com.cn/jfjbmap/content/2014-11/08/content_92414.htm";
     	String url9 = "http://xmwb.xinmin.cn/html/2014-11/06/content_5_2.htm";
     	String url10 = "http://newspaper.jfdaily.com/xwcb/html/2014-11/06/content_33941.htm";
     	String url11 = "http://newspaper.jfdaily.com/xwcb/html/2014-11/06/content_33936.htm";
@@ -473,9 +488,23 @@ public class CDSB implements Runnable {
     	String[] s1 = {"",""};
     	String[] s2 = {"id","ozoom"};
     	String s3 = "utf-8";  //= "gb2312"; //gb2312 utf-8
-    	CDSB T = new CDSB(url17,s1,s2,s1,s1,s1,"",s3);
+    	String[] bqtitle = {"style","line-height:140%;"};
+		String[] bqcontent = {"id","ozoom"};
+		String[] bqdate = {"height","25"};
+		String[] bqnewsource = {"解放军报","....."};
+		String[] bqcategroy ={"class","info"};
+		String bqbuf ="";
+		String encode = "utf-8";
+		String DBName = "jfjb";
+		String DBTable = "cg";
+		String photourl = "http://www.chinamil.com.cn/jfjbmap/";
+		String imageurl = "IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"";     //"img src=\"(.*?)res(.*?)attpic_brief.jpg\""
+		String imagescr = "http:\"?(.*?)(\"|>|\\s+)";     //"http:\"?(.*?)(\"|>|\\s+)"
+		String imageBuf = "../../../";
+    	CDSB T = new CDSB(url8,bqtitle,bqcontent,bqdate,bqcategroy,bqcategroy,bqbuf,encode,photourl,imageurl,imagescr,imageBuf);
+    	T.memory(url8, bqtitle, bqcontent, bqdate, bqnewsource, bqcategroy, bqbuf, DBName, DBTable, encode,photourl,imageurl,imagescr,imageBuf);
 //    	System.out.println(T.text);
-    	T.handleContent(T.text);
+//    	T.handleContent(T.text);
 //    	System.out.println(T.text);
 //    	T.handleOriginalTitle(T.text);
 //    	memory(url1);

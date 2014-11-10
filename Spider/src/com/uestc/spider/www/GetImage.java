@@ -20,7 +20,7 @@ public class GetImage {
     // 地址  
 	public static int imageNum = 1; //图片命名从1开始
     public String URL ; 
-    public String url ; // = "http://e.chengdu.cn/";  //可配置
+    public String photourl ; // = "http://e.chengdu.cn/";  //可配置
     public String fileName ;
     public String imageBuf;      //"../../../"
     // 编码  
@@ -47,7 +47,7 @@ public class GetImage {
 //    }  
       
     public GetImage(String url ,String imgurl ,String imgsrc,String imageBuf){
-    	this.url = url;
+    	this.photourl = url;
     	this.IMGURL_REG = imgurl;
     	this.IMGSRC_REG = imgsrc;
     	this.imageBuf = imageBuf;
@@ -84,7 +84,7 @@ public class GetImage {
         List<String> listImgUrl = new ArrayList<String>();  
         while (matcher.find()) {  
             listImgUrl.add(matcher.group());
-//            System.out.println(matcher.group());
+            System.out.println(matcher.group()+"dddddddd");
         }  
         return listImgUrl;  
     }  
@@ -100,11 +100,13 @@ public class GetImage {
         for (String image : listImageUrl) {
         	// 获取完整url
         	if(image.contains(imageBuf))
-        		image = image.replace(imageBuf,url );
+        		image = image.replace(imageBuf,photourl );
+//        	image = image.replace("\"", "");
+//        	image = image.replaceAll("\"", "");
 //        	System.out.println(image+"222");
             Matcher matcher = Pattern.compile(IMGSRC_REG).matcher(image);  
             while (matcher.find()) { 
-//            	System.out.println(matcher.group());
+            	System.out.println(matcher.group());
 //            	if(listImgSrc.contains(matcher.group().substring(0, matcher.group().length() - 1)))
                 listImgSrc.add(matcher.group().substring(0, matcher.group().length() - 1));  
             }  
@@ -119,35 +121,41 @@ public class GetImage {
      */  
     private Vector<String> Download(List<String> listImgSrc) {
     	Vector<String> name = new Vector<String>();
+    	File f = new File("image");
+    	if(!f.exists()){
+    		f.mkdir();
+    	}
         try {
 //        	System.out.println("kaishi");
-            for (int i = 1 ; i < listImgSrc.size();i++ ) { 
+            for (int i = 0 ; i < listImgSrc.size();i++ ) { 
 //            	System.out.println("qqq");
 //            	System.out.println(url+"tttt");
             	String url = listImgSrc.get(i);
+            	System.out.println(url+"tttt");
                 String imageName = url.substring(url.lastIndexOf("."), url.length());  
                 URL uri = new URL(url);  
                 InputStream in = uri.openStream();
                 FileOutputStream fo;
 //                System.out.println("tttttt");
-                if(imageNum < 10){
+                if(imageNum < 9){
+                	System.out.println("sssssssss");
+                	fo = new FileOutputStream(new File(".\\image",fileName+"000"+imageNum+"000"+(i+1)+imageName)); 
+                	name.add(fileName+"000"+imageNum+"000"+(i+1)+""+imageName);
                 	
-                	fo = new FileOutputStream(new File(".\\image",fileName+"000"+imageNum+"000"+i+""+imageName)); 
-                	name.add(fileName+"000"+imageNum+"000"+i+""+imageName);
-//                	System.out.println("11111");
-                }else if(imageNum < 100){
+//                	System.out.println("11111");)
+                }else if(imageNum < 99){
                 	
-                	fo = new FileOutputStream(new File(".\\image",fileName+"00"+imageNum+"000"+i+""+imageName));
-                	name.add(fileName+"00"+imageNum+"000"+i+""+imageName);
+                	fo = new FileOutputStream(new File(".\\image",fileName+"00"+imageNum+"000"+(i+1)+imageName));
+                	name.add(fileName+"00"+imageNum+"000"+(i+1)+""+imageName);
 //                	System.out.println("222222");
-                }else if(imageNum < 1000){
+                }else if(imageNum < 999){
                 	
-                	fo = new FileOutputStream(new File(".\\image",fileName+"0"+imageNum+"000"+i+""+imageName));
-                	name.add(fileName+"0"+imageNum+"000"+i+""+imageName);
+                	fo = new FileOutputStream(new File(".\\image",fileName+"0"+imageNum+"000"+(i+1)+imageName));
+                	name.add(fileName+"0"+imageNum+"000"+(i+1)+""+imageName);
 //                	System.out.println("33333333");
                 }else{
-                	fo = new FileOutputStream(new File(".\\image",fileName+imageNum+"000"+i+""+imageName));
-                	name.add(fileName+imageNum+"000"+i+""+imageName);
+                	fo = new FileOutputStream(new File(".\\image",fileName+imageNum+"000"+(i+1)+imageName));
+                	name.add(fileName+imageNum+"000"+(i+1)+""+imageName);
 //                	System.out.println("4444444");
                 }
                 
@@ -162,7 +170,8 @@ public class GetImage {
 //                System.out.println(imageName + "下载完成");  
             }  
         } catch (Exception e) {  
-//            System.out.println("下载失败");  
+            System.out.println("下载失败"); 
+            e.printStackTrace();
         } 
         
         return name;
