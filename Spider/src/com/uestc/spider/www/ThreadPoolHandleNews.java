@@ -257,7 +257,7 @@ class TaskThreadPool implements Runnable{
 		GetLink forOneDay = new GetLink(themeLink,contentLink,newurl1,newurl2,newurl3,newurl4);
 		forOneDay.resultForOneDay(2014, 10, 8, title, content, date, newSource, categroy, bufString, ENCODE, DBName, DBTable,imageUrl,imurl_reg,imscr_reg,imageBuf);
 		forOneDay = null;
-		System.out.println(Thread.currentThread()+"xixi");
+//		System.out.println(Thread.currentThread()+"xixi");
 	}
 	
 	

@@ -306,14 +306,19 @@ public class GetLink {
 		String[] bqcategroy ={"class","info"};
 		String bqbuf ="";
 		String encode = "utf-8";
-		String DBName = "jfjb";
+		String DBName = "jfjb1";
 		String DBTable = "cg";
 		String photourl = "http://www.chinamil.com.cn/jfjbmap/";
 		String imageurl = "IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"";     //"img src=\"(.*?)res(.*?)attpic_brief.jpg\""
 		String imagescr = "http:\"?(.*?)(\"|>|\\s+)";     //"http:\"?(.*?)(\"|>|\\s+)"
 		String imagebuf = "../../../";
 		GetLink test = new GetLink(theme,content,s1,s2,s3,s4);
+		//获取具体某一个的所有新闻  url固定
+//		test.allWeWillDo(url1,bqtitle,bqcontent,
+//	    		bqdate,bqnewsource ,bqcategroy ,bqbuf,encode,DBName , DBTable,photourl,imageurl,imagescr,imagebuf);
+		//获取制定某天的所有新闻
 		test.resultForOneDay(2014, 11, 8, bqtitle, bqcontent, bqdate, bqnewsource, bqcategroy, bqbuf, encode, DBName, DBTable,photourl,imageurl,imagescr,imagebuf);
+		
 		long end = System.currentTimeMillis();
 		System.out.println(end-start);
 	}

@@ -378,7 +378,7 @@ public class CDSB implements Runnable {
 		   categroy = categroy.substring(categroy.lastIndexOf("：")+1, categroy.lastIndexOf("»")-1);
 	   }
 	   else if(url.contains("/www.chinamil.com.cn")){  //解放军报
-		   categroy = categroy.substring(categroy.lastIndexOf("：")+1, categroy.lastIndexOf(" "));
+		   categroy = categroy.substring(categroy.lastIndexOf("：")+1,categroy.length()) ;// categroy.lastIndexOf(" "));
 	   }else if(url.contains("newspaper.jfdaily.com/xwcb")){  //新闻晨报
 		   categroy = categroy.replaceAll("\\s*", "");
 		   categroy = categroy.substring(categroy.indexOf("：")+1,categroy.indexOf("稿"));
@@ -439,14 +439,14 @@ public class CDSB implements Runnable {
     * newsource 为创建的数据库名称 ；newtable 为创建的数据库表名
     * */
    public static void memory(String url,String[] bqtitle,String[] bqcontent,
-   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String DBName ,String DBTable,String encode,
+   		String[] bqdate,String[] bqnewsource ,String[] bqcategroy ,String bqbuf ,String encode,String DBName ,String DBTable,
    		String photourl,String imageurl,String imagescr,String imagebuf){
 	   
 	   CRUT crut = new CRUT(DBName ,DBTable);
 	   CDSB cdsb = new CDSB(url,bqtitle,bqcontent,bqdate,bqnewsource,bqcategroy,bqbuf,encode, photourl, imageurl, imagescr, imagebuf);
 //	   if(cdsb.text != null){
 //		System.out.println(cdsb.text);   
-	   System.out.println(url);
+//	   System.out.println(url);
 	   crut.add(cdsb.handleTitle(cdsb.text),cdsb.handleOriginalTitle(cdsb.text), cdsb.handleTitleContent(cdsb.text),
 			   cdsb.handleTime(cdsb.text),cdsb.handleContent(cdsb.text),
 			   cdsb.handleNewSource(cdsb.text), cdsb.handleOriginalSource(cdsb.text),
