@@ -96,7 +96,40 @@ public class CRUT {
 
 		
 	}
-	
+	//重载函数 增加新闻评论栏 
+	public void add(String title,String originalTitle,String titleContent,
+			String time ,String content,String comment,
+			String newSource,String originalSource,
+			String category,String originalCategroy,
+			String url ,String image){
+		
+		DBObject user = new BasicDBObject();
+		//三个标题：标题，内容标题，原始标题
+		user.put("Title", title);
+		user.put("OriginalTitle", originalTitle);
+		user.put("TitleContent", titleContent);
+		
+		//发布时间
+		user.put("Time", time);
+		//新闻内容
+		user.put("Content",content);
+		//新闻评论
+		user.put("Comment", comment);    //新增，针对门户网站
+		//两个新闻来源 ：新闻来源，新闻原始来源
+		user.put("NewSource",newSource);
+		user.put("OriginalSource", originalSource);
+		//两个新闻分类 ：类别 新闻原始类别
+		user.put("Category", category);
+		user.put("OriginalCategroy", originalCategroy);
+		//新闻网址
+		user.put("Url", url);
+		//新闻图片
+		user.put("image",image);
+
+		users.insert(user);
+
+		
+	}
 	//添加图片以及PDF文件 取当前目录下的image文件夹内容
 	public void addFile(InputStream in,Object id){
 		File filePath = new File(".\\image");
