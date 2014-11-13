@@ -63,6 +63,61 @@ class NETEASENews implements FindLinks{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public String findNewTitle(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewOriginalTite(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewContent(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewImages(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewTime(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewSource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewOriginalSource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewCategroy(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewOriginalCategroy(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String findNewComment(String url) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void handle() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }
@@ -79,6 +134,72 @@ class SINANews implements FindLinks{
 	public Queue<String> findContentLinks(String themeLink) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String findNewTitle(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewOriginalTite(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewContent(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewImages(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewTime(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewSource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewOriginalSource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewCategroy(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewOriginalCategroy(String html) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findNewComment(String url) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void handle() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
