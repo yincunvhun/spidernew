@@ -226,12 +226,12 @@ public class GetLink {
 			else
 				s1 = s1.append(year).append(newurl2);
 			StringBuffer url = new StringBuffer();
-//			for(int i = 1 ; i < 32 ;i++){
+			for(int i = 10 ; i < 12 ;i++){
 //				String url;
-				if(day < 10)
-					url = url.append(s1).append(month).append(s2).append("0").append(day).append(s3);
+				if(i < 10)
+					url = url.append(s1).append(month).append(s2).append("0").append(i).append(s3);
 				else
-					url = url.append(s1).append(s2).append(day).append(s3); //url.append(s1).append(j).append(s3).append(i).append(s2);
+					url = url.append(s1).append(month).append(s2).append(i).append(s3); //url.append(s1).append(j).append(s3).append(i).append(s2);
 				
 			System.out.println(url +"QQQQQQQQQQQQQQQQQ");
 				try {
@@ -248,6 +248,8 @@ public class GetLink {
 //			}
 			url = null;
 			System.gc();
+			}
+//		}
 //		}
 	}
 	

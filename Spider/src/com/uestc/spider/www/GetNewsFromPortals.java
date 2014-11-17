@@ -8,8 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +23,12 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.Cookie;
 
 /*
  * 对每一个门户网站顶一个特有的类
@@ -416,6 +425,67 @@ class NETEASENews implements FindLinks{
 		String s2 = ".html"; 
 		String commentUrl;   //http://comment.news.163.com/news3_bbs/AB0V4LPH00014JB6.html
 		commentUrl = s1+url.substring(url.lastIndexOf("/")+1, url.lastIndexOf("."))+s2;
+		
+		URL link = null;
+		try {
+			link = new URL(commentUrl);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+		} 
+        WebClient wc=new WebClient();
+        WebRequest request=new WebRequest(link); 
+        request.setCharset(ENCODE);
+//        其他报文头字段可以根据需要添加
+        wc.getCookieManager().setCookiesEnabled(true);//开启cookie管理
+        wc.getOptions().setJavaScriptEnabled(true);//开启js解析。对于变态网页，这个是必须的
+        wc.getOptions().setCssEnabled(true);//开启css解析。对于变态网页，这个是必须的。
+        wc.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        wc.getOptions().setThrowExceptionOnScriptError(false);
+        wc.getOptions().setTimeout(10000);
+        //准备工作已经做好了
+        HtmlPage page= null;
+        try {
+			page = wc.getPage(request);
+		} catch (FailingHttpStatusCodeException e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+		}
+        if(page==null)
+        {
+            System.out.println("采集 "+commentUrl+" 失败!!!");
+            return null;
+        }
+        String content=page.asText();//网页内容保存在content里
+        if(content==null)
+        {
+            System.out.println("采集 "+commentUrl+" 失败!!!");
+            return null;
+        }else
+        	System.out.println(content);
+        if(!content.contains("去跟贴广场看看"))
+        	return null;
+        String ss = content.substring(content.indexOf("去跟贴广场看看")+7, content.indexOf("跟贴用户自律公约"));
+        System.out.println(ss);
+        ss = null; 
+        content = content.substring(0, content.indexOf("文明社会，从理性发贴开始。谢绝地域攻击。"));
+        content = content.replaceAll("\\s+", "");
+        String commentss = "发表(.*?)顶";
+//        String source = "发表哈哈哈啊哈顶顶顶顶发表家具啊姐姐顶发表哈哈哈顶发表。。。。顶发表；；；；顶发表【【】。；；；顶发表。。、；匹配顶发表(.*?)顶";
+        Pattern newPage = Pattern.compile(commentss);
+        
+        Matcher themeMatcher = newPage.matcher(content);
+        while(themeMatcher.find()){
+        	String mm = themeMatcher.group();
+        	mm = mm.replaceAll("发表", "");
+        	mm = mm.replaceAll("顶", "");
+        	System.out.println(mm);
+        	mm = null;
+        }
+		commentss = null ;
 		return commentUrl;
 	}
 	@Override

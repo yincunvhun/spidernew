@@ -100,10 +100,10 @@ public class ThreadPoolHandleNews{
 		//图片配置：http://newspaper.jfdaily.com/xwcb/resfiles/2014-11/06/l_33941_A0520141106S_3.jpg 正则表达式："img src=\"(.*?)xwcb\resfiles(.*?).jpg\"" 路径："http:\"?(.*?)(\"|>|\\s+)" 辅助："../../../"
 		//主题链接：http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm 内容链接：http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{4,6}.htm
 		//s1 =http://newspaper.jfdaily.com/xwcb/html/ s2 - s3 / s4 /node_2.htm
-		TaskThreadPool xwcb = new TaskThreadPool("xwcb","cg",new String[]{"title",""},new String[]{"class","content"},new String[]{"h5",""},new String[]{"新闻晨报","主办单位：解放日报报业集团，国内统一刊号：CN31-0070"},new String[]{"h5",""},"","gb2312",
-				"http://newspaper.jfdaily.com/","img src=\"(.*?)xwcb\resfiles(.*?).jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
-				"http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm","http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{4,6}.htm","http://newspaper.jfdaily.com/xwcb/html/","-","/","/node_2.htm");
-		cg.execute(xwcb);
+//		TaskThreadPool xwcb = new TaskThreadPool("xwcb","cg",new String[]{"title",""},new String[]{"class","content"},new String[]{"h5",""},new String[]{"新闻晨报","主办单位：解放日报报业集团，国内统一刊号：CN31-0070"},new String[]{"h5",""},"","gb2312",
+//				"http://newspaper.jfdaily.com/","img src=\"(.*?)xwcb\resfiles(.*?).jpg\"","http:\"?(.*?)(\"|>|\\s+)","../../../",
+//				"http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/node_[0-9]{1,3}.htm","http://newspaper.jfdaily.com/xwcb/html/[0-9]{4}-[0-9]{2}/[0-9]{2}/content_[0-9]{4,6}.htm","http://newspaper.jfdaily.com/xwcb/html/","-","/","/node_2.htm");
+//		cg.execute(xwcb);
 		
 		//广州日报 标题：h3 内容："class","article" 日期："class","infor" 来源：广州日报 分类："class","title" 待处理：""
 		//图片配置：http://gzdaily.dayoo.com/ 正则表达式："IMG src=\"(.*?)res(.*?)attpic_brief.jpg\"" 路径："http:\"?(.*?)(\"|>|\\s+)" 辅助："../../../"
@@ -255,7 +255,7 @@ class TaskThreadPool implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		GetLink forOneDay = new GetLink(themeLink,contentLink,newurl1,newurl2,newurl3,newurl4);
-		forOneDay.resultForOneDay(2014, 10, 8, title, content, date, newSource, categroy, bufString, ENCODE, DBName, DBTable,imageUrl,imurl_reg,imscr_reg,imageBuf);
+		forOneDay.resultForOneDay(2014, 11, 11, title, content, date, newSource, categroy, bufString, ENCODE, DBName, DBTable,imageUrl,imurl_reg,imscr_reg,imageBuf);
 		forOneDay = null;
 //		System.out.println(Thread.currentThread()+"xixi");
 	}
