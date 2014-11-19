@@ -144,7 +144,7 @@ public class ThreadPoolHandleNews{
 		
 		//现代快报 主题：id=mp369460 内容：
 		
-		
+		cg.shutdown();
 		
 		
 		
@@ -255,7 +255,7 @@ class TaskThreadPool implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		GetLink forOneDay = new GetLink(themeLink,contentLink,newurl1,newurl2,newurl3,newurl4);
-		forOneDay.resultForOneDay(2014, 11, 11, title, content, date, newSource, categroy, bufString, ENCODE, DBName, DBTable,imageUrl,imurl_reg,imscr_reg,imageBuf);
+		forOneDay.resultForOneDay(2014, 11, 17, title, content, date, newSource, categroy, bufString, ENCODE, DBName, DBTable,imageUrl,imurl_reg,imscr_reg,imageBuf);
 		forOneDay = null;
 //		System.out.println(Thread.currentThread()+"xixi");
 	}

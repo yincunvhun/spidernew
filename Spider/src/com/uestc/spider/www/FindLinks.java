@@ -19,7 +19,7 @@ public interface FindLinks {
 	
 	public String findNewsTitle(String html ,String[] label,String buf) ; //获取新闻标题
 	
-	public String findNewsOriginalTite(String html , String[] label,String buf) ; //获取新闻原始标题
+	public String findNewsOriginalTitle(String html , String[] label,String buf) ; //获取新闻原始标题
 	
 	public String findNewsContent(String html , String[] label) ;    //获取新闻内容
 	
@@ -37,7 +37,7 @@ public interface FindLinks {
 	
 	public String findNewsComment(String url) ;         //获取新闻评论
 	
-	public void handle();                              //把所有标签加入数据库
+	public void handle(String DBName, String DBTable,String html ,String url);                              //把所有标签加入数据库
 	
 	
 	

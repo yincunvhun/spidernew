@@ -44,13 +44,21 @@ class NETEASENews implements FindLinks{
 	
 	private String[] newsTitleLabel;     //新闻标题标签 title or id=h1title
 	private String[] newsContentLabel ;  //新闻内容标签 "id","endText"
-	private String[] newsTimeLabel ;   //新闻时间"class","ep-time-soure cDGray"
+	private String[] newsTimeLabel ;   //新闻时间"class","ep-time-soure cDGray"  
 	private String[] newsSourceLabel ; //（3个参数）新闻来源 同新闻时间"class","ep-time-soure cDGray" 再加上一个"网易新闻-国内新闻"
 	private String[] newsCategroyLabel ; // "国内" "网易新闻-国内新闻-http://news.163.com/domestic/"
 //	private String[] news
 	
-	public NETEASENews(String encode){
+	public NETEASENews(String encode, String[] newsTitle ,String[] newsContent ,String[] newsTime,String[] newsSource,String[] newsCategroy ){
 		this.ENCODE = encode ;
+		this.newsTitleLabel = newsTitle ;
+		this.newsContentLabel = newsContent ;
+		this.newsTimeLabel = newsTime ;
+		this.newsSourceLabel = newsSource ;
+		this.newsCategroyLabel = newsCategroy ;
+		
+		
+		
 	}
 	
 	//保存获取到的主题links
@@ -77,7 +85,9 @@ class NETEASENews implements FindLinks{
 //	}
 	//获取国内新闻
 	public void getGuoNeiNews(){
-		
+		String DBName = "NETEASE";
+		String DBTable = "CG";
+		CRUT crut = new CRUT(DBName ,DBTable);
 		//国内新闻 首页链接
 		theme = "http://news.163.com/domestic/";
 		
@@ -117,13 +127,15 @@ class NETEASENews implements FindLinks{
 		//获取每个新闻网页的html
 		int i = 0;
 		while(!guoNeiNewsContent.isEmpty()){
-			String buf = guoNeiNewsContent.poll();
-			String html = findContentHtml(buf);  //获取新闻的html
-			System.out.println(buf);
+			String url = guoNeiNewsContent.poll();
+			String html = findContentHtml(url);  //获取新闻的html
+			System.out.println(url);
 //			System.out.println(html);
 			i++;
-			System.out.println(findNewsComment(buf));
-			System.out.println("\n");
+//			System.out.println(findNewsComment(url));
+//			System.out.println("\n");
+			crut.add(findNewsTitle(html,newsTitleLabel,"_网易新闻中心"), findNewsOriginalTitle(html,newsTitleLabel,""),findNewsOriginalTitle(html,newsTitleLabel,""), findNewsTime(html,newsTimeLabel),findNewsContent(html,newsContentLabel),findNewsComment(url), findNewsSource(html,newsSourceLabel),
+					findNewsOriginalSource(html,newsSourceLabel), findNewsCategroy(html,newsCategroyLabel), findNewsOriginalCategroy(html,newsCategroyLabel), url, "");
 		}
 		System.out.println(i);
 		
@@ -331,7 +343,7 @@ class NETEASENews implements FindLinks{
 		return titleBuf;
 	}
 	//news 未处理标题
-	public String findNewsOriginalTite(String html , String[] label,String buf) {
+	public String findNewsOriginalTitle(String html , String[] label,String buf) {
 		// TODO Auto-generated method stub
 		String titleBuf ;
 		if(label[1].equals("")){
@@ -339,8 +351,8 @@ class NETEASENews implements FindLinks{
 		}else{
 			titleBuf = HandleHtml(html,label[0],label[1]);
 		}
-		if(titleBuf.contains(buf))
-			titleBuf = titleBuf.substring(0, titleBuf.indexOf(buf))	;
+//		if(titleBuf.contains(buf))
+//			titleBuf = titleBuf.substring(0, titleBuf.indexOf(buf))	;
 		return titleBuf;
 	}
 	@Override
@@ -364,13 +376,17 @@ class NETEASENews implements FindLinks{
 	@Override
 	public String findNewsTime(String html , String[] label) {
 		// TODO Auto-generated method stub
-		String timeBuf;
+		String timeBuf ="";
 		if(label[1].equals("")){
 			timeBuf = HandleHtml(html , label[0]);
 		}else{
 			timeBuf = HandleHtml(html , label[0],label[1]);
 		}
-		timeBuf = timeBuf.substring(9, 28);  //根据不同新闻 不同处理
+		if(timeBuf == ""){
+			timeBuf = HandleHtml(html,"id","ptime");
+//			return timeBuf;
+		}else
+			timeBuf = timeBuf.substring(9, 28);  //根据不同新闻 不同处理
 		return timeBuf;
 	}
 	@Override
@@ -419,6 +435,7 @@ class NETEASENews implements FindLinks{
 	//获取新闻评论
 	@Override
 	public String findNewsComment(String url) {
+		String result = "";
 		// TODO Auto-generated method stub
 		//url = "http://news.163.com/14/1114/15/AB18IT2H00014JB6.html#f=wlist";
 		String s1 = "http://comment.news.163.com/news3_bbs/";
@@ -469,7 +486,8 @@ class NETEASENews implements FindLinks{
         if(!content.contains("去跟贴广场看看"))
         	return null;
         String ss = content.substring(content.indexOf("去跟贴广场看看")+7, content.indexOf("跟贴用户自律公约"));
-        System.out.println(ss);
+//        System.out.println(ss);
+        result = ss;
         ss = null; 
         content = content.substring(0, content.indexOf("文明社会，从理性发贴开始。谢绝地域攻击。"));
         content = content.replaceAll("\\s+", "");
@@ -483,14 +501,17 @@ class NETEASENews implements FindLinks{
         	mm = mm.replaceAll("发表", "");
         	mm = mm.replaceAll("顶", "");
         	System.out.println(mm);
+        	result = result +"  ;"+ mm +"  ;";
         	mm = null;
         }
 		commentss = null ;
 		return commentUrl;
 	}
 	@Override
-	public void handle() {
+	public void handle(String DBName ,String DBTable,String html ,String url) {
 		// TODO Auto-generated method stub
+//		CRUT crut = new CRUT(DBName ,DBTable);
+//		crut.add(title, originalTitle, titleContent, time, content, comment, newSource, originalSource, category, originalCategroy, url, image);
 		
 	}
 	
@@ -517,7 +538,7 @@ class SINANews implements FindLinks{
 		return null;
 	}
 
-	public String findNewsOriginalTite(String html , String[] label , String buf) {
+	public String findNewsOriginalTitle(String html , String[] label , String buf) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -580,7 +601,7 @@ class SINANews implements FindLinks{
 	}
 
 	@Override
-	public void handle() {
+	public void handle(String DBName,String DBTable,String html ,String url) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -613,7 +634,15 @@ class SINANews implements FindLinks{
 public class GetNewsFromPortals {
 	
 	public static void main(String[] args){
-		NETEASENews test = new NETEASENews("gb2312");  //网易gb2312
+		/*private String[] newsTitleLabel;     //新闻标题标签 title or id=h1title
+		private String[] newsContentLabel ;  //新闻内容标签 "id","endText"
+		private String[] newsTimeLabel ;   //新闻时间"class","ep-time-soure cDGray"
+		private String[] newsSourceLabel ; //（3个参数）新闻来源 同新闻时间"class","ep-time-soure cDGray" 再加上一个"网易新闻-国内新闻"
+		private String[] newsCategroyLabel ; // "国内" "网易新闻-国内新闻-http://news.163.com/domestic/"
+		 * 
+		 * */
+		NETEASENews test = new NETEASENews("gb2312" ,new String[]{"title",""},new String[]{"id","endText"},new String[]{"class","ep-time-soure cDGray"},
+				new String[]{"class","ep-time-soure cDGray","网易新闻-国内新闻"},new String[]{"国内" ,"网易新闻-国内新闻-http://news.163.com/domestic/"});  //网易gb2312
 		test.getGuoNeiNews();
 	}
 	

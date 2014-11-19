@@ -225,16 +225,17 @@ public class GetLink {
 				s1 = s1.append(year).append(newurl2).append("0");  //http://e.chengdu.cn/html/2014-0
 			else
 				s1 = s1.append(year).append(newurl2);
-			StringBuffer url = new StringBuffer();
+			StringBuffer url = new StringBuffer("");
 			for(int i = 10 ; i < 12 ;i++){
 //				String url;
-				if(i < 10)
-					url = url.append(s1).append(month).append(s2).append("0").append(i).append(s3);
-				else
-					url = url.append(s1).append(month).append(s2).append(i).append(s3); //url.append(s1).append(j).append(s3).append(i).append(s2);
+				 //url.append(s1).append(j).append(s3).append(i).append(s2);
 				
-			System.out.println(url +"QQQQQQQQQQQQQQQQQ");
+//			System.out.println(url +"QQQQQQQQQQQQQQQQQ");
 				try {
+					if(i < 10)
+						url = url.append(s1).append(month).append(s2).append("0").append(i).append(s3);
+					else
+						url = url.append(s1).append(month).append(s2).append(i).append(s3);
 					allWeWillDo(url.toString(),bqtitle,bqcontent,
 							bqdate,bqnewsource ,bqcategroy ,bqbuf,encode,DBName , DBTable,photourl,imageurl,imagescr,imagebuf);
 				} catch (Exception e) {
