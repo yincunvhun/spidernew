@@ -505,7 +505,7 @@ class NETEASENews implements FindLinks{
         	mm = null;
         }
 		commentss = null ;
-		return commentUrl;
+		return result;
 	}
 	@Override
 	public void handle(String DBName ,String DBTable,String html ,String url) {
