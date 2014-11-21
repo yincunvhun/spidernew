@@ -35,7 +35,7 @@ public interface FindLinks {
 	
 	public String findNewsOriginalCategroy(String html , String[] label); //新闻具体版面属性
 	
-	public String findNewsComment(String url ,String reg) ;         //获取新闻评论
+	public String findNewsComment(String url ,String html,String[] label) ;         //获取新闻评论
 	
 	public void handle(String DBName, String DBTable,String html ,String url);                              //把所有标签加入数据库
 	
